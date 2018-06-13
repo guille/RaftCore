@@ -68,7 +68,7 @@ namespace EasyRaftTest {
             Array.ForEach(nodes, x => x.Stop());
         }
 
-        [Fact (Skip = "time")]
+        [Fact (Skip = "")]
         public void TestStateMachineReplication() {
             // Goes further and tests state machine
             int nodeCount = 3;
@@ -93,7 +93,7 @@ namespace EasyRaftTest {
             Array.ForEach(nodes, x => x.Stop());
         }
 
-        [Fact (Skip = "time")]
+        [Fact (Skip = "")]
         public void TestLeaderElection() {
             int nodeCount = 3;
             RaftNode[] nodes = ConfigureRaftCluster(nodeCount);

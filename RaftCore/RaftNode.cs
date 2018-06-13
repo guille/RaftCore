@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Threading;
 
 namespace EasyRaft {
@@ -213,6 +214,7 @@ namespace EasyRaft {
         // **********************
 
         private void CandidateLoop() {
+            StopHeartbeatTimer();
             ResetElectionTimer();
 
             CurrentTerm++;
@@ -237,11 +239,10 @@ namespace EasyRaft {
 
         private void LeaderLoop() {
             StopElectionTimer();
-            // Send heartbeats periodically
             ResetHeartbeatTimer();
 
-            // reset nextIndex, matchIndex
             NextIndex.Clear();
+            //TODO: Reset matchindex?
             // Initialize all nextIndex to the index just after the last one in the log
             Cluster.GetNodeIdsExcept(NodeId).ForEach(x => NextIndex[x] = Log.Count);
             // MatchIndex.Clear();
@@ -313,7 +314,6 @@ namespace EasyRaft {
         private bool SendAppendEntries(LogEntry entry) {
             var nodes = Cluster.GetNodeIdsExcept(NodeId);
             int successfulAppends = 0;
-            // in parallel, and asynchronously:
 
             // If last log index ≥ nextIndex for a follower: send
             // AppendEntries RPC with log entries starting at nextIndex
@@ -321,19 +321,30 @@ namespace EasyRaft {
             // If AppendEntries fails because of log inconsistency:
             // decrement nextIndex and retry (§5.3)
 
-            nodes.ForEach( x => 
+            // TODO: use await somewhere here?
+            // do await so the execution continues when the entry is accepted by a majority
+            // but keep the other appendrequests retrying (in some queue?)
+            // raise event every time successfulAppends is incremented?
+            // with a callback to what's currently inside the if (SendAppendEntries(entry))
+
+            // if any return false, decrement nextindex (careful race conditions) and try again                
+
+            // TODO: Thread safe?
+            var entries = new List<LogEntry>() { entry };
+            Parallel.ForEach(nodes, x => 
             {
-                var entries = new List<LogEntry>() { entry };
                 var prevLogIndex = Math.Max(0, NextIndex[x] - 1);
                 if (Cluster.SendAppendEntriesTo(x, CurrentTerm, NodeId, prevLogIndex, Log[prevLogIndex].TermNumber, entries, CommitIndex))
                     Interlocked.Increment(ref successfulAppends);
-                // TODO: Change into a do-while
-                // if any return false, decrement nextindex and try again
-                
             });
+
 
             return successfulAppends >= GetMajority();
 
+        }
+
+        internal void TestConnection() {
+            StateMachine.TestConnection();
         }
 
         public override string ToString() {

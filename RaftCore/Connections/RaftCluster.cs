@@ -38,28 +38,25 @@ namespace EasyRaft.Connections {
         }
         
         public int CalculateElectionTimeoutMS() {
-            // TODO: move to a constructor?
-            int broadcastTime = Math.Max(50, CalculateBroadcastTimeMS());
+            int broadcastTime = Math.Max(25, CalculateBroadcastTimeMS());
             Random rand = new Random(); // TODO: Change seed? broadcast * current time?
             // Ensures the election timeout is one order of magnitude bigger than the broadcast time
-            return rand.Next(broadcastTime * 12, broadcastTime * 69);
+            return rand.Next(broadcastTime * 12, broadcastTime * 32);
         }
 
         // TODO: Broadcast time depends on the state machine chosen.
-        // A memory hashmap will perform faster than a relational database.
-        // This method doesn't take that time into account, just the network travel time
         // TODO: It's always 0 now
+        // measure how much it takes to send and receive a request
+        // to each node,& return the average
         public int CalculateBroadcastTimeMS() {
             long[] times = new long[nodes.Count];
             int i = 0;
             Stopwatch stopWatch = new Stopwatch();
             // Takes an average of clusterSize measures
             foreach (var node in nodes) {
-                stopWatch.Start();
-                stopWatch.Reset();
+                stopWatch.Restart();
                 
-                // -1 in term assures fast reply and no state change
-                Parallel.ForEach(nodes, x => x.AppendEntries(-1, 0, 0, 0, null, 0));
+                Parallel.ForEach(nodes, x => x.TestConnection());
                 
                 stopWatch.Stop();
 
@@ -67,8 +64,6 @@ namespace EasyRaft.Connections {
                 i++;
 
             }
-            // measure how much it takes to send and receive a request
-            // to each node,& return the average
             return (int) times.Average();
         }
 
@@ -78,22 +73,8 @@ namespace EasyRaft.Connections {
         
         public bool SendAppendEntriesTo(uint nodeId, int term, uint leaderId, int prevLogIndex, 
                                        int prevLogTerm, List<LogEntry> entries, int leaderCommit) {
-            
-
-            // use await somewhere here?
-            // do await on majority so the execution continues, but keep the other appendrequests retrying
             return nodes.Find(x => x.NodeId == nodeId).AppendEntries(term, leaderId, prevLogIndex, 
                                        prevLogTerm, entries, leaderCommit);
-
-            // new method in raftnode, called from makerequest --> SendAppendEntries
-            // calls this method to send append entries
-            // depending on what it returns:
-            // if this method returns true, add 1 to some counter (careful race conditions)
-            // if this method returns false, decrement nextindex (careful race conditions) and try again
-            // when said counter hits GetMajority, apply stuff
-            // this new method should be called synchronously??
-            // if it's asynchronous, a new request could get applied before?
-            
         }
     }
 }

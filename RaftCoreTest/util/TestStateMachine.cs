@@ -19,7 +19,7 @@ namespace EasyRaftTest.util {
                 case "CLEAR":
                     state.Remove(commands[1]);
                     break;
-                // unknown command
+                // TODO: unknown command
                 default:
                     break;
             }
@@ -36,6 +36,12 @@ namespace EasyRaftTest.util {
 
         public override String ToString() {
             return state.ToString();
+        }
+
+        public void TestConnection() {
+            var testState = new Dictionary<string, int>();
+            testState["X"] = 0;
+            testState.Clear();
         }
 
     }

@@ -29,7 +29,10 @@ namespace EasyRaft.Connections.Implementations {
             return Node.AppendEntries(term, leaderId, prevLogIndex, prevLogTerm, entries, leaderCommit);
         }
 
-
+        // TODO: Internal?
+        public void TestConnection() {
+            Node.TestConnection();
+        }
 
     }
 }

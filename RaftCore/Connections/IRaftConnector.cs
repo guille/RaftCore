@@ -10,5 +10,6 @@ namespace EasyRaft.Connections {
         void SendRequestToNode(String command);
         bool RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm);
         bool AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, List<LogEntry> entries, int leaderCommit);
+        void TestConnection();
     }
 }
