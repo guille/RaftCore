@@ -3,7 +3,8 @@ using Xunit;
 using EasyRaft;
 using EasyRaft.Connections;
 using EasyRaft.Connections.Implementations;
-using EasyRaftTest.util;
+using EasyRaft.StateMachine;
+using EasyRaft.StateMachine.Implementations;
 using System.Threading;
 
 namespace EasyRaftTest {
@@ -15,7 +16,7 @@ namespace EasyRaftTest {
 
             // Create nodes
             for (uint i = 0; i < numberOfNodes; i++) {
-                nodes[i] = new RaftNode(i, new TestStateMachine());
+                nodes[i] = new RaftNode(i, new DictionaryStateMachine());
             }
 
             // Adding them to a cluster and configuring them

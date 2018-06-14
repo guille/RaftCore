@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using EasyRaft.StateMachine;
 
-namespace EasyRaftTest.util {
-    class TestStateMachine : EasyRaftStateMachine {
+namespace EasyRaft.StateMachine.Implementations {
+    public class DictionaryStateMachine : RaftCoreStateMachine {
         Dictionary<string, int> state =
             new Dictionary<string, int>();
 

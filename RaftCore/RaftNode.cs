@@ -14,7 +14,7 @@ namespace EasyRaft {
     	// TODO: Some of these should be stored in non-volatile storage
         public uint NodeId { get; }
 
-        public EasyRaftStateMachine StateMachine { get; private set; }
+        public RaftCoreStateMachine StateMachine { get; private set; }
         public RaftCluster Cluster { get; private set; }
         public List<LogEntry> Log { get; private set; }
 
@@ -56,7 +56,7 @@ namespace EasyRaft {
         // *  Initialization/configuration methods  *
         // ******************************************
 
-        public RaftNode(uint nodeId, EasyRaftStateMachine stateMachine) {
+        public RaftNode(uint nodeId, RaftCoreStateMachine stateMachine) {
             this.NodeId = nodeId;
             this.StateMachine = stateMachine;
             this.Log = new List<LogEntry>();
