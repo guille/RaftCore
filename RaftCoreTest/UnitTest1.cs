@@ -196,7 +196,7 @@ namespace EasyRaftTest {
 
 
         // Running the test by leaving the reason empty doesn't seem to work for theories(?)
-        // [Theory (Skip =  "time")]
+        // [Theory (Skip =  "")]
         [Theory]
         [InlineData(2)]
         [InlineData(3)]
@@ -247,6 +247,20 @@ namespace EasyRaftTest {
                 Assert.Equal(1, node.Log[1].Index);
                 Assert.Equal(2, node.GetCommittedEntries().Count);
             }
+
+            Array.ForEach(nodes, x => x.Stop());
+        }
+
+        [Fact (Skip =  "")]
+        public void TestStartLotsOfNodes() {
+            RaftNode[] nodes = ConfigureRaftCluster(40, SM.Dictionary);
+            foreach (RaftNode node in nodes) {
+                node.Run();
+            }
+
+            Thread.Sleep(2500);
+
+            Array.ForEach(nodes, x => Assert.NotNull(x.LeaderId));
 
             Array.ForEach(nodes, x => x.Stop());
         }

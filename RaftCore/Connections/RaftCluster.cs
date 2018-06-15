@@ -67,6 +67,7 @@ namespace EasyRaft.Connections {
                 stopWatch.Stop();
 
                 times[i] = stopWatch.ElapsedMilliseconds;
+
                 i++;
 
             }

@@ -333,62 +333,6 @@ namespace EasyRaft {
             return thisLastLogTerm;
         }
 
-        private bool SendAppendEntries(LogEntry entry) {
-            var nodes = Cluster.GetNodeIdsExcept(NodeId);
-
-            // Already appended to leader
-            int successfulAppends = 1;
-
-            // If last log index ≥ nextIndex for a follower: send
-            // AppendEntries RPC with log entries starting at nextIndex
-            // If successful: update nextIndex and matchIndex for follower (§5.3)
-            // If AppendEntries fails because of log inconsistency:
-            // decrement nextIndex and retry (§5.3)
-
-            // TODO: use await somewhere here?
-            // do await so the execution continues when the entry is accepted by a majority
-            // but keep the other appendrequests retrying (in some queue?)
-            // raise event every time successfulAppends is incremented?
-            // with a callback to what's currently inside the if (SendAppendEntries(entry))
-
-            // if any return false, decrement nextindex (careful race conditions) and try again                
-
-            // TODO: Thread safe?
-            var entries = new List<LogEntry>() { entry };
-            Parallel.ForEach(nodes, x => 
-            {
-                var prevLogIndex = Math.Max(0, NextIndex[x] - 1);
-                if (Cluster.SendAppendEntriesTo(x, CurrentTerm, NodeId, prevLogIndex, Log[prevLogIndex].TermNumber, entries, CommitIndex))
-                    Interlocked.Increment(ref successfulAppends);
-                else {
-                    Console.WriteLine("Append entry to node " + x + " failed");
-                    SendMissingEntriesTo(x);
-                }
-            });
-
-
-            return successfulAppends >= GetMajority();
-
-        }
-
-        private void SendMissingEntriesTo(uint nodeId) {
-            if (Log.Count == 0) return;
-
-            if (NextIndex[nodeId] > 0) {
-                NextIndex[nodeId]--;
-            }
-            var prevLogIndex = Math.Max(0, NextIndex[nodeId]);
-
-            // TODO: Check next line
-            var entries = Log.Skip(NextIndex[nodeId]).Take(1).ToList();
-
-            Console.WriteLine("Sending missing entry: " + entries[0].Command + " to node " + nodeId + " with next index " + NextIndex[nodeId]);
-            if (Cluster.SendAppendEntriesTo(nodeId, CurrentTerm, NodeId, prevLogIndex, Log[prevLogIndex].TermNumber, entries, CommitIndex)) {
-                NextIndex[nodeId] += 2;
-            }
-
-        }
-
         private void SendHeartbeats(object arg) {
             var nodes = Cluster.GetNodeIdsExcept(NodeId);
 
@@ -437,7 +381,7 @@ namespace EasyRaft {
             for(int i = CommitIndex + 1; i < Log.Count; i++) {
                 // We add 1 because we know the entry is replicated in this node
                 var replicatedIn = MatchIndex.Values.Count(x => x >= i) + 1;
-                if (Log[i].TermNumber == CurrentTerm) {
+                if (Log[i].TermNumber == CurrentTerm && replicatedIn > GetMajority()) {
                     CommitIndex = i;
                     StateMachine.ExecuteCommand(Log[i].Command);
                     LastApplied = i;
@@ -450,20 +394,6 @@ namespace EasyRaft {
             // && log[N].termNumber == CurrentTerm  (skip this?)
             // (responder a client request)
 
-        }
-
-        private void SendHeartbeatsOld(object arg) {
-            var nodes = Cluster.GetNodeIdsExcept(NodeId);
-
-            Parallel.ForEach(nodes, x => 
-            {
-                if (!Cluster.SendHeartbeatTo(x, CurrentTerm, NodeId, CommitIndex)) {
-                    // heartbeat failed means node x log is missing entries
-                    Console.WriteLine("Failed heartbeat");
-                    SendMissingEntriesTo(x);
-                }
-                
-            });            
         }
 
         internal void TestConnection() {
