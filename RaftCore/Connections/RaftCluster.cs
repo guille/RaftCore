@@ -36,6 +36,12 @@ namespace EasyRaft.Connections {
                 }
             );
         }
+
+        public bool SendHeartbeatTo(uint nodeId, int term, uint leaderId, int commitIndex) {
+            // IMPORTANT: No heartbeats to self
+            return nodes.Find(x => x.NodeId == nodeId)
+                        .AppendEntries(term, leaderId, 0, 0, null, commitIndex);
+        }
         
         public int CalculateElectionTimeoutMS() {
             int broadcastTime = Math.Max(25, CalculateBroadcastTimeMS());

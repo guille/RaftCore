@@ -98,11 +98,25 @@ namespace EasyRaft {
         // should term be out param?
         public bool AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, 
                                   List<LogEntry> entries, int leaderCommit) {
-            if (NodeState == NodeState.Stopped) return false;
-            if (term < this.CurrentTerm) return false;
+            if (NodeState == NodeState.Stopped) {
+                return (entries == null);
+            }
+            if (term < this.CurrentTerm) {
+                Console.WriteLine("Received AppendEntries with outdated term. Declining.");
+                return false;
+            }
 
-            if (Log.Count > 0 && prevLogIndex >= Log.Count) return false; // So it doesn't throw an exception right below
-            if (entries != null && Log.Count > 0 && Log[prevLogIndex].TermNumber != prevLogTerm) return false;
+            // TODO: Delete
+            // if (Log.Count > 0 && prevLogIndex >= Log.Count) {
+            //     Console.WriteLine("Log doesn't contain an entry at prevLogIndex");
+            //     return false; // So it doesn't throw an exception right below
+            // }
+
+            if (entries != null && Log.Count > 0 && Log[prevLogIndex].TermNumber != prevLogTerm) {
+                // log doesn’t contain an entry at prevLogIndex
+                // whose term matches prevLogTerm
+                return false;
+            }
 
             // If we get to here it means the one sending us a message is leader
             StopHeartbeatTimer();
@@ -121,7 +135,7 @@ namespace EasyRaft {
                 // Append any new entries not already in the log
                 Log.AddRange(entries);
 
-                Console.WriteLine("Node " + NodeId + " appending new entry");
+                Console.WriteLine("Node " + NodeId + " appending new entry " + entries[0].Command);
             }
             else { // HEARTBEAT
                 Console.WriteLine("Node " + NodeId + " received heartbeat from " + leaderId);
@@ -129,12 +143,20 @@ namespace EasyRaft {
 
 
             if (leaderCommit > CommitIndex) {
+                //TODO: It gets here on heartbeats
                 Console.WriteLine("Node " + NodeId + " applying entries");
                 // Instead of doing maths with leaderCommit and CommitIndex, could:
                 // If commitIndex > lastApplied:
                 // increment lastApplied, apply log[lastApplied] to state machine
                 var toApply = Log.Skip(CommitIndex + 1).Take(leaderCommit - CommitIndex).ToList();
-                toApply.ForEach(x => Console.WriteLine(x.Command));
+
+                if (toApply.Count == 0) {
+                    Console.WriteLine("Node " + NodeId + " failed applying entries");
+                    return false;
+                }
+
+                // TODO: Delete commented out code
+                // toApply.ForEach(x => Console.WriteLine(x.Command));
                 toApply.ForEach(x => StateMachine.ExecuteCommand(x.Command));
 
                 CommitIndex = Math.Min(leaderCommit, Log[Log.Count - 1].Index);
@@ -184,13 +206,6 @@ namespace EasyRaft {
                 var entry = new LogEntry(CurrentTerm, Log.Count, command);
                 Log.Add(entry);
 
-                // entry has been replicated: (i.e. replicated to majority of nodes)
-                if (SendAppendEntries(entry)) {
-                    StateMachine.ExecuteCommand(command);
-                    LastApplied++;
-                    CommitIndex++;
-                }
-
                 // TODO: return result of the execution
             }
             else {
@@ -200,8 +215,16 @@ namespace EasyRaft {
                     Thread.Sleep(500);
                 } while (!LeaderId.HasValue);
                 uint leader = LeaderId.Value;
-                Console.WriteLine("Redirecting to leader " + leader);
-                Cluster.RedirectRequestToNode(command, leader);
+
+                if (leader == NodeId) {
+                    // Redirect to a random node
+                    var randomNode = Cluster.GetNodeIdsExcept(NodeId)[0];
+                    Cluster.RedirectRequestToNode(command, randomNode);
+                }
+                else {
+                    Console.WriteLine("Redirecting to leader " + leader + " by " + NodeId);
+                    Cluster.RedirectRequestToNode(command, leader);
+                }
             }
         }
 
@@ -242,10 +265,11 @@ namespace EasyRaft {
             ResetHeartbeatTimer();
 
             NextIndex.Clear();
-            //TODO: Reset matchindex?
-            // Initialize all nextIndex to the index just after the last one in the log
-            Cluster.GetNodeIdsExcept(NodeId).ForEach(x => NextIndex[x] = Log.Count);
-            // MatchIndex.Clear();
+            MatchIndex.Clear();
+
+            var nodeIds = Cluster.GetNodeIdsExcept(NodeId);
+            nodeIds.ForEach(x => NextIndex[x] = Log.Count);
+            nodeIds.ForEach(x => MatchIndex[x] = 0);
         }
 
         private void FollowerLoop() {
@@ -258,12 +282,14 @@ namespace EasyRaft {
             StopElectionTimer();
         }
 
-        public void Start() {
+        public void Restart() {
+            Console.WriteLine("Restarting node " + NodeId);
             NodeState = NodeState.Follower;
             Run();
         }
 
         public void Stop() {
+            Console.WriteLine("Bringing node " + NodeId + " down");
             NodeState = NodeState.Stopped;
             Run();
         }
@@ -276,10 +302,6 @@ namespace EasyRaft {
         private void StartElection(object arg) {
             NodeState = NodeState.Candidate;
             Run();
-        }
-
-        private void SendHeartbeats(object arg) {
-            Cluster.SendHeartbeats(CurrentTerm, NodeId, CommitIndex);
         }
 
         private void StopHeartbeatTimer() {
@@ -298,7 +320,7 @@ namespace EasyRaft {
 
         private void ResetHeartbeatTimer() {
             if (NodeState == NodeState.Leader) {
-                heartbeatTimer.Change(0, ElectionTimeoutMS/3);
+                heartbeatTimer.Change(0, ElectionTimeoutMS/2);
             }
         }
 
@@ -313,7 +335,9 @@ namespace EasyRaft {
 
         private bool SendAppendEntries(LogEntry entry) {
             var nodes = Cluster.GetNodeIdsExcept(NodeId);
-            int successfulAppends = 0;
+
+            // Already appended to leader
+            int successfulAppends = 1;
 
             // If last log index ≥ nextIndex for a follower: send
             // AppendEntries RPC with log entries starting at nextIndex
@@ -336,11 +360,110 @@ namespace EasyRaft {
                 var prevLogIndex = Math.Max(0, NextIndex[x] - 1);
                 if (Cluster.SendAppendEntriesTo(x, CurrentTerm, NodeId, prevLogIndex, Log[prevLogIndex].TermNumber, entries, CommitIndex))
                     Interlocked.Increment(ref successfulAppends);
+                else {
+                    Console.WriteLine("Append entry to node " + x + " failed");
+                    SendMissingEntriesTo(x);
+                }
             });
 
 
             return successfulAppends >= GetMajority();
 
+        }
+
+        private void SendMissingEntriesTo(uint nodeId) {
+            if (Log.Count == 0) return;
+
+            if (NextIndex[nodeId] > 0) {
+                NextIndex[nodeId]--;
+            }
+            var prevLogIndex = Math.Max(0, NextIndex[nodeId]);
+
+            // TODO: Check next line
+            var entries = Log.Skip(NextIndex[nodeId]).Take(1).ToList();
+
+            Console.WriteLine("Sending missing entry: " + entries[0].Command + " to node " + nodeId + " with next index " + NextIndex[nodeId]);
+            if (Cluster.SendAppendEntriesTo(nodeId, CurrentTerm, NodeId, prevLogIndex, Log[prevLogIndex].TermNumber, entries, CommitIndex)) {
+                NextIndex[nodeId] += 2;
+            }
+
+        }
+
+        private void SendHeartbeats(object arg) {
+            var nodes = Cluster.GetNodeIdsExcept(NodeId);
+
+            Parallel.ForEach(nodes, nodeId => 
+            {
+                var prevLogIndex = Math.Max(0, NextIndex[nodeId] - 1);
+                int prevLogTerm = (Log.Count > 0) ? prevLogTerm = Log[prevLogIndex].TermNumber : 0;
+
+                List<LogEntry> entries;
+
+                if (Log.Count > NextIndex[nodeId]) {
+                    Console.WriteLine("Log Count: " + Log.Count + " -- Target node[nextIndex]: " + nodeId + " [" + NextIndex[nodeId] + "]");
+                    entries = Log.Skip(NextIndex[nodeId]).ToList();
+                    // entries = new List<LogEntry>() { prevEntry };
+                }
+                else {
+                    // covers Log is empty or no new entries to replicate
+                    entries = null;
+                }
+
+                var res = Cluster.SendAppendEntriesTo(nodeId, CurrentTerm, NodeId, prevLogIndex, prevLogTerm, entries, CommitIndex);
+
+                if (res) {
+                    if (entries != null) {
+                        // Entry appended
+                        Console.WriteLine("Successful AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
+                        NextIndex[nodeId] = Log.Count;
+                        MatchIndex[nodeId] = Log.Count - 1;
+                    }
+                    // TODO: Common code for checking term in response
+                    // Wrong. Heartbeat received should contain a term number
+                    
+                }
+                else {
+                    Console.WriteLine("Failed AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
+                    // Entry failed to be appended
+                    if (NextIndex[nodeId] > 0) {
+                        NextIndex[nodeId]--;
+                    }
+
+                }
+            });
+
+            // TODO: Do this as new task?
+            // Iterate over all uncommitted entries
+            for(int i = CommitIndex + 1; i < Log.Count; i++) {
+                // We add 1 because we know the entry is replicated in this node
+                var replicatedIn = MatchIndex.Values.Count(x => x >= i) + 1;
+                if (Log[i].TermNumber == CurrentTerm) {
+                    CommitIndex = i;
+                    StateMachine.ExecuteCommand(Log[i].Command);
+                    LastApplied = i;
+                }
+            }
+            // entry has been replicated: (i.e. replicated to majority of nodes)
+            // if there exists N such that
+            // N > commitIndex
+            // && majority of matchIndex[i] >= N
+            // && log[N].termNumber == CurrentTerm  (skip this?)
+            // (responder a client request)
+
+        }
+
+        private void SendHeartbeatsOld(object arg) {
+            var nodes = Cluster.GetNodeIdsExcept(NodeId);
+
+            Parallel.ForEach(nodes, x => 
+            {
+                if (!Cluster.SendHeartbeatTo(x, CurrentTerm, NodeId, CommitIndex)) {
+                    // heartbeat failed means node x log is missing entries
+                    Console.WriteLine("Failed heartbeat");
+                    SendMissingEntriesTo(x);
+                }
+                
+            });            
         }
 
         internal void TestConnection() {
