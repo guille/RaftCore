@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EasyRaft.StateMachine {
     public interface RaftCoreStateMachine {
-        void ExecuteCommand(String command);
+        void Apply(String command);
         int RequestStatus(string param);
         void TestConnection();
     }

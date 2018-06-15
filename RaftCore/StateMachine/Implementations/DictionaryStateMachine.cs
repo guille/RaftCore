@@ -7,7 +7,7 @@ namespace EasyRaft.StateMachine.Implementations {
         Dictionary<string, int> state =
             new Dictionary<string, int>();
 
-        public void ExecuteCommand(String command) {
+        public void Apply(String command) {
             command = command.ToUpper();
             var commands = command.Split(" ");
             switch(commands[0]) {

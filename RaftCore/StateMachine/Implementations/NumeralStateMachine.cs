@@ -6,7 +6,7 @@ namespace EasyRaft.StateMachine.Implementations {
     public class NumeralStateMachine : RaftCoreStateMachine {
         int state = 0;
 
-        public void ExecuteCommand(String command) {
+        public void Apply(String command) {
             var delta = int.Parse(command);
             state += delta;
             //TODO: Rescue parse error

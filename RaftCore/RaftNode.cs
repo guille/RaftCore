@@ -157,7 +157,7 @@ namespace EasyRaft {
 
                 // TODO: Delete commented out code
                 // toApply.ForEach(x => Console.WriteLine(x.Command));
-                toApply.ForEach(x => StateMachine.ExecuteCommand(x.Command));
+                toApply.ForEach(x => StateMachine.Apply(x.Command));
 
                 CommitIndex = Math.Min(leaderCommit, Log[Log.Count - 1].Index);
                 
@@ -383,7 +383,7 @@ namespace EasyRaft {
                 var replicatedIn = MatchIndex.Values.Count(x => x >= i) + 1;
                 if (Log[i].TermNumber == CurrentTerm && replicatedIn > GetMajority()) {
                     CommitIndex = i;
-                    StateMachine.ExecuteCommand(Log[i].Command);
+                    StateMachine.Apply(Log[i].Command);
                     LastApplied = i;
                 }
             }
