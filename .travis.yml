@@ -1,0 +1,6 @@
+language: csharp
+solution: RaftCore.sln
+mono: none
+dotnet: 2.1
+script:
+ - dotnet test RaftCoreTest
