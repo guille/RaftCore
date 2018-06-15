@@ -251,7 +251,7 @@ namespace EasyRaftTest {
             Array.ForEach(nodes, x => x.Stop());
         }
 
-        [Fact (Skip =  "")]
+        [Fact (Skip =  "time")]
         public void TestStartLotsOfNodes() {
             RaftNode[] nodes = ConfigureRaftCluster(40, SM.Dictionary);
             foreach (RaftNode node in nodes) {
