@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyRaft.StateMachine {
+namespace RaftCore.StateMachine {
     public interface RaftCoreStateMachine {
         void Apply(String command);
         int RequestStatus(string param);

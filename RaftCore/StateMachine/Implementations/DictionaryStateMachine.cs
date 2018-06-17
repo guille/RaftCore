@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EasyRaft.StateMachine;
+using RaftCore.StateMachine;
 
-namespace EasyRaft.StateMachine.Implementations {
+namespace RaftCore.StateMachine.Implementations {
     public class DictionaryStateMachine : RaftCoreStateMachine {
         Dictionary<string, int> state =
             new Dictionary<string, int>();

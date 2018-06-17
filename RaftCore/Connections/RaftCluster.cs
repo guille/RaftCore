@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Diagnostics;
 
-namespace EasyRaft.Connections {
+namespace RaftCore.Connections {
     public class RaftCluster {
         List<IRaftConnector> nodes = new List<IRaftConnector>();
         public int Size { 
@@ -22,27 +22,6 @@ namespace EasyRaft.Connections {
             nodes.Find(x => x.NodeId == leaderId.Value).SendRequestToNode(command);
         }
 
-        // Returns votes obtained
-        public int RequestVotesFromAll(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
-            return nodes.AsParallel().Where(x => x.NodeId != candidateId).Count(x => x.RequestVote(term, candidateId, lastLogIndex, lastLogTerm));
-        }
-
-        public void SendHeartbeats(int term, uint leaderId, int commitIndex) {
-            // IMPORTANT: No heartbeats to self
-            Parallel.ForEach(nodes, x =>
-                {
-                    if (x.NodeId != leaderId)
-                        x.AppendEntries(term, leaderId, 0, 0, null, commitIndex);
-                }
-            );
-        }
-
-        public bool SendHeartbeatTo(uint nodeId, int term, uint leaderId, int commitIndex) {
-            // IMPORTANT: No heartbeats to self
-            return nodes.Find(x => x.NodeId == nodeId)
-                        .AppendEntries(term, leaderId, 0, 0, null, commitIndex);
-        }
-        
         public int CalculateElectionTimeoutMS() {
             int broadcastTime = Math.Max(25, CalculateBroadcastTimeMS());
             Random rand = new Random(); // TODO: Change seed? broadcast * current time?
@@ -78,10 +57,14 @@ namespace EasyRaft.Connections {
             return nodes.Where(x => x.NodeId != nodeId).Select(x => x.NodeId).ToList();
         }
         
-        public bool SendAppendEntriesTo(uint nodeId, int term, uint leaderId, int prevLogIndex, 
+        public Result<bool> SendAppendEntriesTo(uint nodeId, int term, uint leaderId, int prevLogIndex, 
                                        int prevLogTerm, List<LogEntry> entries, int leaderCommit) {
             return nodes.Find(x => x.NodeId == nodeId).AppendEntries(term, leaderId, prevLogIndex, 
                                        prevLogTerm, entries, leaderCommit);
+        }
+
+        public Result<bool> RequestVoteFrom(uint nodeId, int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
+            return nodes.Find(x => x.NodeId == nodeId).RequestVote(term, candidateId, lastLogIndex, lastLogTerm);
         }
     }
 }

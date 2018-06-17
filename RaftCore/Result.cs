@@ -1,10 +1,15 @@
 using System;
-using System.Collections.Generic;
 
-namespace EasyRaftTest.Connections {
+namespace RaftCore {
 	// TODO: Internal/protected?
-    class Result<T> {
-        T result {get;}
-        int Term {get;}
+    public class Result<T> {
+        public T Value { get; }
+        public int Term { get; }
+
+        public Result(T value, int term) {
+        	this.Value = value;
+        	this.Term = term;
+
+        }
 	}
 }

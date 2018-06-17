@@ -1,11 +1,11 @@
 using System;
 using Xunit;
 using System.Collections.Generic;
-using EasyRaft;
-using EasyRaft.Connections;
-using EasyRaft.Connections.Implementations;
-using EasyRaft.StateMachine;
-using EasyRaft.StateMachine.Implementations;
+using RaftCore;
+using RaftCore.Connections;
+using RaftCore.Connections.Implementations;
+using RaftCore.StateMachine;
+using RaftCore.StateMachine.Implementations;
 using System.Threading;
 
 namespace EasyRaftTest {

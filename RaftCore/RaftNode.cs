@@ -1,5 +1,5 @@
-﻿using EasyRaft.StateMachine;
-using EasyRaft.Connections;
+﻿using RaftCore.StateMachine;
+using RaftCore.Connections;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace EasyRaft {
+namespace RaftCore {
     public enum NodeState { Leader, Follower, Candidate, Stopped };
 
     public class RaftNode {
@@ -61,7 +61,7 @@ namespace EasyRaft {
             this.StateMachine = stateMachine;
             this.Log = new List<LogEntry>();
 
-            electionTimer = new Timer(StartElection);
+            electionTimer = new Timer(TriggerElection);
             heartbeatTimer = new Timer(SendHeartbeats);
 
             NextIndex = new Dictionary<uint, int>();
@@ -78,16 +78,22 @@ namespace EasyRaft {
         public void Run() {
             switch(this.NodeState) {
                 case NodeState.Candidate:
-                    CandidateLoop();
+                    StopHeartbeatTimer();
+                    ResetElectionTimer();
+                    StartElection();
                     break;
                 case NodeState.Leader:
-                    LeaderLoop();
+                    StopElectionTimer();
+                    ResetHeartbeatTimer();
+                    ResetLeaderState();
                     break;
                 case NodeState.Follower:
-                    FollowerLoop();
+                    StopHeartbeatTimer();
+                    ResetElectionTimer();
                     break;
                 case NodeState.Stopped:
-                    StoppedLoop();
+                    StopHeartbeatTimer();
+                    StopElectionTimer();
                     break;
             }
         }
@@ -96,14 +102,14 @@ namespace EasyRaft {
         // Invoked by leader to replicate log entries; also used as heartbeat.
         // Receiver implementation
         // should term be out param?
-        public bool AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, 
+        public Result<bool> AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, 
                                   List<LogEntry> entries, int leaderCommit) {
             if (NodeState == NodeState.Stopped) {
-                return (entries == null);
+                return new Result<bool>(entries == null, CurrentTerm);
             }
             if (term < this.CurrentTerm) {
                 Console.WriteLine("Received AppendEntries with outdated term. Declining.");
-                return false;
+                return new Result<bool>(false, CurrentTerm);
             }
 
             // TODO: Delete
@@ -115,7 +121,7 @@ namespace EasyRaft {
             if (entries != null && Log.Count > 0 && Log[prevLogIndex].TermNumber != prevLogTerm) {
                 // log doesn’t contain an entry at prevLogIndex
                 // whose term matches prevLogTerm
-                return false;
+                return new Result<bool>(false, CurrentTerm);
             }
 
             // If we get to here it means the one sending us a message is leader
@@ -152,7 +158,7 @@ namespace EasyRaft {
 
                 if (toApply.Count == 0) {
                     Console.WriteLine("Node " + NodeId + " failed applying entries");
-                    return false;
+                    return new Result<bool>(false, CurrentTerm);
                 }
 
                 // TODO: Delete commented out code
@@ -164,18 +170,18 @@ namespace EasyRaft {
                 LastApplied = CommitIndex;
             }
 
-            return true;
+            return new Result<bool>(true, CurrentTerm);
         }
 
         // Invoked by candidates to request a vote.
         // Return value of true means candidate received vote
-        public bool RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
-            if (NodeState == NodeState.Stopped) return false;
+        public Result<bool> RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
+            if (NodeState == NodeState.Stopped) return new Result<bool>(false, CurrentTerm);
             Console.WriteLine("Node " + candidateId + " is requesting vote from node " + NodeId);
 
             bool voteGranted = false;
             if (term < CurrentTerm) {
-                return voteGranted;
+                return new Result<bool>(voteGranted, CurrentTerm);
             }
 
             StopHeartbeatTimer();
@@ -192,7 +198,7 @@ namespace EasyRaft {
                 VotedFor = candidateId;
             }
 
-            return voteGranted;
+            return new Result<bool>(voteGranted, CurrentTerm);
         }
 
 
@@ -236,20 +242,31 @@ namespace EasyRaft {
         // *  INTERNAL METHODS  *
         // **********************
 
-        private void CandidateLoop() {
-            StopHeartbeatTimer();
-            ResetElectionTimer();
-
+        private void StartElection() {
             CurrentTerm++;
-            LeaderId = null;
 
             // Vote for self
             VoteCount = 1;
             VotedFor = NodeId;
 
-            // start election
+            // Start election
             Console.Out.WriteLine("A node has started an election: " + NodeId + " (term " + CurrentTerm + ")");
-            VoteCount += Cluster.RequestVotesFromAll(CurrentTerm, NodeId, Log.Count - 1, GetLastLogTerm());
+
+            var nodes = Cluster.GetNodeIdsExcept(NodeId);
+            int votes = 0;
+
+            Parallel.ForEach(nodes, nodeId => 
+            {
+                var res = Cluster.RequestVoteFrom(nodeId, CurrentTerm, NodeId, Log.Count - 1, GetLastLogTerm());
+
+                CurrentTerm = res.Term;
+
+                if (res.Value) {
+                    Interlocked.Increment(ref votes);
+                }
+            });
+            VoteCount += votes;
+
             Console.Out.WriteLine(VoteCount);
 
             if (VoteCount >= GetMajority()) {
@@ -260,26 +277,14 @@ namespace EasyRaft {
             }
         }
 
-        private void LeaderLoop() {
-            StopElectionTimer();
-            ResetHeartbeatTimer();
-
+        private void ResetLeaderState() {
             NextIndex.Clear();
             MatchIndex.Clear();
 
-            var nodeIds = Cluster.GetNodeIdsExcept(NodeId);
-            nodeIds.ForEach(x => NextIndex[x] = Log.Count);
-            nodeIds.ForEach(x => MatchIndex[x] = 0);
-        }
-
-        private void FollowerLoop() {
-            StopHeartbeatTimer();
-            ResetElectionTimer();
-        }
-
-        private void StoppedLoop() {
-            StopHeartbeatTimer();
-            StopElectionTimer();
+            Cluster.GetNodeIdsExcept(NodeId).ForEach(x => {
+                NextIndex[x] = Log.Count;
+                MatchIndex[x] = 0;
+            });
         }
 
         public void Restart() {
@@ -299,7 +304,7 @@ namespace EasyRaft {
             return (int) Math.Ceiling(n);
         }
 
-        private void StartElection(object arg) {
+        private void TriggerElection(object arg) {
             NodeState = NodeState.Candidate;
             Run();
         }
@@ -324,13 +329,9 @@ namespace EasyRaft {
             }
         }
 
+        // Returns the last term in the log, or 0 if log is empty
         private int GetLastLogTerm() {
-            int thisLastLogTerm = 0; // default 0
-            if (Log.Count > 0) {
-                thisLastLogTerm = Log[Log.Count - 1].TermNumber;
-            }
-
-            return thisLastLogTerm;
+            return (Log.Count > 0) ? Log[Log.Count - 1].TermNumber : 0;
         }
 
         private void SendHeartbeats(object arg) {
@@ -355,7 +356,9 @@ namespace EasyRaft {
 
                 var res = Cluster.SendAppendEntriesTo(nodeId, CurrentTerm, NodeId, prevLogIndex, prevLogTerm, entries, CommitIndex);
 
-                if (res) {
+                CurrentTerm = res.Term;
+
+                if (res.Value) {
                     if (entries != null) {
                         // Entry appended
                         Console.WriteLine("Successful AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
@@ -387,11 +390,6 @@ namespace EasyRaft {
                     LastApplied = i;
                 }
             }
-            // entry has been replicated: (i.e. replicated to majority of nodes)
-            // if there exists N such that
-            // N > commitIndex
-            // && majority of matchIndex[i] >= N
-            // && log[N].termNumber == CurrentTerm  (skip this?)
             // (responder a client request)
 
         }
