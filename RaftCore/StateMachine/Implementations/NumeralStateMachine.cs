@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using RaftCore.StateMachine;
 
 namespace RaftCore.StateMachine.Implementations {
     public class NumeralStateMachine : RaftCoreStateMachine {
@@ -12,8 +10,8 @@ namespace RaftCore.StateMachine.Implementations {
             //TODO: Rescue parse error
         }
 
-        public int RequestStatus(string param) {
-            return state;
+        public string RequestStatus(string param) {
+            return state.ToString();
         }
 
         public override String ToString() {

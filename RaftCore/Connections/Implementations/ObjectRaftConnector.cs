@@ -15,8 +15,7 @@ namespace RaftCore.Connections.Implementations {
             this.Node = node;
         }
 
-        public void SendRequestToNode(String command) {
-            // TODO: Return?
+        public void MakeRequest(String command) {
             Node.MakeRequest(command);
         }
         

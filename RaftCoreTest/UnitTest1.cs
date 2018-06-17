@@ -1,14 +1,12 @@
 using System;
 using Xunit;
-using System.Collections.Generic;
 using RaftCore;
 using RaftCore.Connections;
 using RaftCore.Connections.Implementations;
-using RaftCore.StateMachine;
 using RaftCore.StateMachine.Implementations;
 using System.Threading;
 
-namespace EasyRaftTest {
+namespace RaftCoreTest {
     public class UnitTest1 {
 
         // TODO: Move next function to new package (test.util)
@@ -105,7 +103,7 @@ namespace EasyRaftTest {
             Array.ForEach(nodes, x => x.Stop());
 
             foreach (var node in nodes) {
-                Assert.Equal(10, node.StateMachine.RequestStatus("X"));
+                Assert.Equal("10", node.StateMachine.RequestStatus("X"));
             }
 
             Array.ForEach(nodes, x => x.Stop());
@@ -136,7 +134,7 @@ namespace EasyRaftTest {
             Array.ForEach(nodes, x => x.Stop());
 
             foreach (var node in nodes) {
-                Assert.Equal(-11, node.StateMachine.RequestStatus(""));
+                Assert.Equal("-11", node.StateMachine.RequestStatus(""));
             }
 
             Array.ForEach(nodes, x => x.Stop());

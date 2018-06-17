@@ -8,10 +8,16 @@ using System.Threading.Tasks;
 using System.Threading;
 
 namespace RaftCore {
+    /// <summary>
+    /// Possible states a node can be in
+    /// </summary>
     public enum NodeState { Leader, Follower, Candidate, Stopped };
 
     public class RaftNode {
     	// TODO: Some of these should be stored in non-volatile storage
+        /// <summary>
+        /// Unsigned integer uniquely representing a node.
+        /// </summary>
         public uint NodeId { get; }
 
         public RaftCoreStateMachine StateMachine { get; private set; }
@@ -52,10 +58,11 @@ namespace RaftCore {
             }
         }
 
-        // ******************************************
-        // *  Initialization/configuration methods  *
-        // ******************************************
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RaftNode"/> class.
+        /// </summary>
+        /// <param name="nodeId">The node's ID</param>
+        /// <param name="stateMachine"><see cref="RaftCoreStateMachine"/> to replicate</param>
         public RaftNode(uint nodeId, RaftCoreStateMachine stateMachine) {
             this.NodeId = nodeId;
             this.StateMachine = stateMachine;
@@ -68,13 +75,20 @@ namespace RaftCore {
             MatchIndex = new Dictionary<uint, int>();
         }
 
+        /// <summary>
+        /// Configures the node: adds the cluster object, calculates the election timeout and sets the initial state to Follower.
+        /// </summary>
+        /// <param name="cluster"><see cref="RaftCluster"/> instance containing all the nodes in the cluster</param>
         public void Configure(RaftCluster cluster) {
             this.Cluster = cluster;
             this.ElectionTimeoutMS = Cluster.CalculateElectionTimeoutMS();
             this.NodeState = NodeState.Follower;
         }
 
-
+        /// <summary>
+        /// Invoked after a change of state, or to start the node's execution for the first time.
+        /// Initializes the timers and state appropiate to the node's state.
+        /// </summary>
         public void Run() {
             switch(this.NodeState) {
                 case NodeState.Candidate:
@@ -98,10 +112,17 @@ namespace RaftCore {
             }
         }
 
-        
-        // Invoked by leader to replicate log entries; also used as heartbeat.
-        // Receiver implementation
-        // should term be out param?
+
+        /// <summary>
+        /// Invoked by a leader node to replicate log entries or send heartbeats.
+        /// </summary>
+        /// <param name="term">Leader's current term number</param>
+        /// <param name="leaderId">ID of the node invoking this method</param>
+        /// <param name="prevLogIndex">Index of log immediately preceding new ones</param>
+        /// <param name="prevLogTerm">Term of prevLogIndex entry</param>
+        /// <param name="entries">List of entries sent to be replicated. null for heartbeat</param>
+        /// <param name="leaderCommit">Leader's CommitIndex</param>
+        /// <returns>Returns a Result object containing the current term of the node and whether the request worked</returns>
         public Result<bool> AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, 
                                   List<LogEntry> entries, int leaderCommit) {
             if (NodeState == NodeState.Stopped) {
@@ -111,12 +132,6 @@ namespace RaftCore {
                 Console.WriteLine("Received AppendEntries with outdated term. Declining.");
                 return new Result<bool>(false, CurrentTerm);
             }
-
-            // TODO: Delete
-            // if (Log.Count > 0 && prevLogIndex >= Log.Count) {
-            //     Console.WriteLine("Log doesn't contain an entry at prevLogIndex");
-            //     return false; // So it doesn't throw an exception right below
-            // }
 
             if (entries != null && Log.Count > 0 && Log[prevLogIndex].TermNumber != prevLogTerm) {
                 // log doesn’t contain an entry at prevLogIndex
@@ -173,8 +188,15 @@ namespace RaftCore {
             return new Result<bool>(true, CurrentTerm);
         }
 
-        // Invoked by candidates to request a vote.
-        // Return value of true means candidate received vote
+        /// <summary>
+        /// Invoked by candidates to request a vote from this node.
+        /// It uses the parameters provided to check whether the candidate is more up to date than this node.
+        /// </summary>
+        /// <param name="term">Term of the candidate</param>
+        /// <param name="candidateId">Node ID of the candidate</param>
+        /// <param name="lastLogIndex">Index of candidate's last log entry</param>
+        /// <param name="lastLogTerm">Term of candidate's last log entry</param>
+        /// <returns>Returns a Result object containing the current term of the node and whether it grants the requested vote</returns>
         public Result<bool> RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
             if (NodeState == NodeState.Stopped) return new Result<bool>(false, CurrentTerm);
             Console.WriteLine("Node " + candidateId + " is requesting vote from node " + NodeId);
@@ -201,18 +223,19 @@ namespace RaftCore {
             return new Result<bool>(voteGranted, CurrentTerm);
         }
 
-
-        // **************************
-        // *  Called by the client  *
-        // **************************
+        /// <summary>
+        /// Called by a client to make a request to the node.
+        /// If the node is the leader, appends the entry to its log.
+        /// Otherwise, it waits until it finds a leader and redirects the request to them.
+        /// The request might be redirected to another node if it can't find a leader
+        /// </summary>
+        /// <param name="command">String forming a command recognisable by the state machine</param>
         public void MakeRequest(String command) {
             if (NodeState == NodeState.Leader) {
                 Console.WriteLine("This node is the leader");
                 
                 var entry = new LogEntry(CurrentTerm, Log.Count, command);
                 Log.Add(entry);
-
-                // TODO: return result of the execution
             }
             else {
                 // Wait until there is a leader (maybe itself)
@@ -234,6 +257,10 @@ namespace RaftCore {
             }
         }
 
+        /// <summary>
+        /// Determines the elements in the log that have been committed, as far as the node knows.
+        /// </summary>
+        /// <returns>List of entries in the log known to be committed.</returns>
         public List<LogEntry> GetCommittedEntries() {
             return Log.Take(CommitIndex + 1).ToList();
         }
@@ -287,18 +314,30 @@ namespace RaftCore {
             });
         }
 
+        /// <summary>
+        /// Changes the node's state to Follower if it was stopped. It does nothing otherwise.
+        /// </summary>
         public void Restart() {
-            Console.WriteLine("Restarting node " + NodeId);
-            NodeState = NodeState.Follower;
-            Run();
+            if (NodeState == NodeState.Stopped) {
+                Console.WriteLine("Restarting node " + NodeId);
+                NodeState = NodeState.Follower;
+                Run();
+            }
         }
 
+        /// <summary>
+        /// Changes the node's state to Stopped. A node won't accept RPCs while in this state,
+        /// </summary>
         public void Stop() {
             Console.WriteLine("Bringing node " + NodeId + " down");
             NodeState = NodeState.Stopped;
             Run();
         }
 
+        /// <summary>
+        /// Calculates the minimum number of nodes that form a majority.
+        /// </summary>
+        /// <returns>Number of nodes in the cluster representing a quorum</returns>
         private int GetMajority() {
             double n = (Cluster.Size + 1) / 2;
             return (int) Math.Ceiling(n);
@@ -329,11 +368,20 @@ namespace RaftCore {
             }
         }
 
-        // Returns the last term in the log, or 0 if log is empty
+        /// <summary>
+        /// Calculates the term of the last log entry.
+        /// </summary>
+        /// <returns>Term of node's last log entry. If the log is empty, returns 0</returns>
         private int GetLastLogTerm() {
             return (Log.Count > 0) ? Log[Log.Count - 1].TermNumber : 0;
         }
 
+        /// <summary>
+        /// Triggered by the heartbeatTimer. Sends AppendEntries requests in parallel to all the nodes in the cluster.
+        /// If there are unreplicated entries, sends them in the request. Sends a simple heartbeat otherwise.
+        /// It also checks MatchIndex for any entries replicated in the majority of nodes, and commits them.
+        /// </summary>
+        /// <param name="arg">Sent by System.Threading.Timer</param>
         private void SendHeartbeats(object arg) {
             var nodes = Cluster.GetNodeIdsExcept(NodeId);
 
@@ -365,9 +413,6 @@ namespace RaftCore {
                         NextIndex[nodeId] = Log.Count;
                         MatchIndex[nodeId] = Log.Count - 1;
                     }
-                    // TODO: Common code for checking term in response
-                    // Wrong. Heartbeat received should contain a term number
-                    
                 }
                 else {
                     Console.WriteLine("Failed AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
@@ -394,6 +439,10 @@ namespace RaftCore {
 
         }
 
+        /// <summary>
+        /// Used by the cluster to calculate the broadcast time.
+        /// Makes a dummy request to the state machine.
+        /// </summary>
         internal void TestConnection() {
             StateMachine.TestConnection();
         }

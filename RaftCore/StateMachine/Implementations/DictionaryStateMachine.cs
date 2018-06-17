@@ -25,12 +25,12 @@ namespace RaftCore.StateMachine.Implementations {
             }
         }
 
-        public int RequestStatus(string param) {
+        public string RequestStatus(string param) {
             if (state.ContainsKey(param)) {
-                return state[param];
+                return state[param].ToString();
             }
             else {
-                return -1;
+                return "";
             }
         }
 
