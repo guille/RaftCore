@@ -396,7 +396,6 @@ namespace RaftCore {
                 if (Log.Count > NextIndex[nodeId]) {
                     LogMessage("Log Count: " + Log.Count + " -- Target node[nextIndex]: " + nodeId + " [" + NextIndex[nodeId] + "]");
                     entries = Log.Skip(NextIndex[nodeId]).ToList();
-                    // entries = new List<LogEntry>() { prevEntry };
                 }
                 else {
                     // covers Log is empty or no new entries to replicate

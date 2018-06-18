@@ -5,9 +5,13 @@ namespace RaftCore.StateMachine.Implementations {
         int state = 0;
 
         public void Apply(String command) {
-            var delta = int.Parse(command);
-            state += delta;
-            //TODO: Rescue parse error
+            try {
+                var delta = int.Parse(command);
+                state += delta;
+            } catch (System.FormatException) {
+                ; // Don't apply bad requests
+            }
+            
         }
 
         public string RequestStatus(string param) {

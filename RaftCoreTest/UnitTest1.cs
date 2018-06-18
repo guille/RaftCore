@@ -194,7 +194,7 @@ namespace RaftCoreTest {
 
 
         // Running the test by leaving the reason empty doesn't seem to work for theories(?)
-        // [Theory (Skip =  "time")]
+        // [Theory (Skip =  "")]
         [Theory]
         [InlineData(2)]
         [InlineData(3)]

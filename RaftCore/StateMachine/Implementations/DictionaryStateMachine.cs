@@ -8,20 +8,24 @@ namespace RaftCore.StateMachine.Implementations {
             new Dictionary<string, int>();
 
         public void Apply(String command) {
-            command = command.ToUpper();
             var commands = command.Split(" ");
-            switch(commands[0]) {
-                // SET X Y
-                case "SET":
-                    state[commands[1]] = int.Parse(commands[2]);
-                    break;
-                // CLEAR X
-                case "CLEAR":
-                    state.Remove(commands[1]);
-                    break;
-                // TODO: unknown command
-                default:
-                    break;
+            try {
+                switch(commands[0].ToUpper()) {
+                    // SET X Y
+                    case "SET":
+                        state[commands[1]] = int.Parse(commands[2]);
+                        break;
+                    // CLEAR X
+                    case "CLEAR":
+                        if (state.ContainsKey(commands[1])) {
+                            state.Remove(commands[1]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } catch (System.FormatException) {
+                ; // Don't apply bad requests
             }
         }
 
