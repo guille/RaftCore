@@ -1,4 +1,7 @@
-﻿using RaftCore.StateMachine;
+﻿// #define DEBUG
+#undef DEBUG
+
+using RaftCore.StateMachine;
 using RaftCore.Connections;
 using System;
 using System.Collections.Generic;
@@ -129,7 +132,7 @@ namespace RaftCore {
                 return new Result<bool>(entries == null, CurrentTerm);
             }
             if (term < this.CurrentTerm) {
-                Console.WriteLine("Received AppendEntries with outdated term. Declining.");
+                LogMessage("Received AppendEntries with outdated term. Declining.");
                 return new Result<bool>(false, CurrentTerm);
             }
 
@@ -156,28 +159,26 @@ namespace RaftCore {
                 // Append any new entries not already in the log
                 Log.AddRange(entries);
 
-                Console.WriteLine("Node " + NodeId + " appending new entry " + entries[0].Command);
+                LogMessage("Node " + NodeId + " appending new entry " + entries[0].Command);
             }
             else { // HEARTBEAT
-                Console.WriteLine("Node " + NodeId + " received heartbeat from " + leaderId);
+                LogMessage("Node " + NodeId + " received heartbeat from " + leaderId);
             }
 
 
             if (leaderCommit > CommitIndex) {
                 //TODO: It gets here on heartbeats
-                Console.WriteLine("Node " + NodeId + " applying entries");
+                LogMessage("Node " + NodeId + " applying entries");
                 // Instead of doing maths with leaderCommit and CommitIndex, could:
                 // If commitIndex > lastApplied:
                 // increment lastApplied, apply log[lastApplied] to state machine
                 var toApply = Log.Skip(CommitIndex + 1).Take(leaderCommit - CommitIndex).ToList();
 
                 if (toApply.Count == 0) {
-                    Console.WriteLine("Node " + NodeId + " failed applying entries");
+                    LogMessage("Node " + NodeId + " failed applying entries");
                     return new Result<bool>(false, CurrentTerm);
                 }
 
-                // TODO: Delete commented out code
-                // toApply.ForEach(x => Console.WriteLine(x.Command));
                 toApply.ForEach(x => StateMachine.Apply(x.Command));
 
                 CommitIndex = Math.Min(leaderCommit, Log[Log.Count - 1].Index);
@@ -199,7 +200,7 @@ namespace RaftCore {
         /// <returns>Returns a Result object containing the current term of the node and whether it grants the requested vote</returns>
         public Result<bool> RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
             if (NodeState == NodeState.Stopped) return new Result<bool>(false, CurrentTerm);
-            Console.WriteLine("Node " + candidateId + " is requesting vote from node " + NodeId);
+            LogMessage("Node " + candidateId + " is requesting vote from node " + NodeId);
 
             bool voteGranted = false;
             if (term < CurrentTerm) {
@@ -232,7 +233,7 @@ namespace RaftCore {
         /// <param name="command">String forming a command recognisable by the state machine</param>
         public void MakeRequest(String command) {
             if (NodeState == NodeState.Leader) {
-                Console.WriteLine("This node is the leader");
+                LogMessage("This node is the leader");
                 
                 var entry = new LogEntry(CurrentTerm, Log.Count, command);
                 Log.Add(entry);
@@ -251,7 +252,7 @@ namespace RaftCore {
                     Cluster.RedirectRequestToNode(command, randomNode);
                 }
                 else {
-                    Console.WriteLine("Redirecting to leader " + leader + " by " + NodeId);
+                    LogMessage("Redirecting to leader " + leader + " by " + NodeId);
                     Cluster.RedirectRequestToNode(command, leader);
                 }
             }
@@ -277,7 +278,7 @@ namespace RaftCore {
             VotedFor = NodeId;
 
             // Start election
-            Console.Out.WriteLine("A node has started an election: " + NodeId + " (term " + CurrentTerm + ")");
+            LogMessage("A node has started an election: " + NodeId + " (term " + CurrentTerm + ")");
 
             var nodes = Cluster.GetNodeIdsExcept(NodeId);
             int votes = 0;
@@ -294,10 +295,8 @@ namespace RaftCore {
             });
             VoteCount += votes;
 
-            Console.Out.WriteLine(VoteCount);
-
             if (VoteCount >= GetMajority()) {
-                Console.Out.WriteLine("Leader!! : " + NodeId);
+                LogMessage("New leader!! : " + NodeId + " with " + VoteCount + " votes");
                 LeaderId = NodeId;
                 NodeState = NodeState.Leader;
                 Run();
@@ -319,7 +318,7 @@ namespace RaftCore {
         /// </summary>
         public void Restart() {
             if (NodeState == NodeState.Stopped) {
-                Console.WriteLine("Restarting node " + NodeId);
+                LogMessage("Restarting node " + NodeId);
                 NodeState = NodeState.Follower;
                 Run();
             }
@@ -329,9 +328,11 @@ namespace RaftCore {
         /// Changes the node's state to Stopped. A node won't accept RPCs while in this state,
         /// </summary>
         public void Stop() {
-            Console.WriteLine("Bringing node " + NodeId + " down");
-            NodeState = NodeState.Stopped;
-            Run();
+            if (NodeState != NodeState.Stopped) {
+                LogMessage("Bringing node " + NodeId + " down");
+                NodeState = NodeState.Stopped;
+                Run();
+            }
         }
 
         /// <summary>
@@ -393,7 +394,7 @@ namespace RaftCore {
                 List<LogEntry> entries;
 
                 if (Log.Count > NextIndex[nodeId]) {
-                    Console.WriteLine("Log Count: " + Log.Count + " -- Target node[nextIndex]: " + nodeId + " [" + NextIndex[nodeId] + "]");
+                    LogMessage("Log Count: " + Log.Count + " -- Target node[nextIndex]: " + nodeId + " [" + NextIndex[nodeId] + "]");
                     entries = Log.Skip(NextIndex[nodeId]).ToList();
                     // entries = new List<LogEntry>() { prevEntry };
                 }
@@ -409,13 +410,13 @@ namespace RaftCore {
                 if (res.Value) {
                     if (entries != null) {
                         // Entry appended
-                        Console.WriteLine("Successful AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
+                        LogMessage("Successful AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
                         NextIndex[nodeId] = Log.Count;
                         MatchIndex[nodeId] = Log.Count - 1;
                     }
                 }
                 else {
-                    Console.WriteLine("Failed AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
+                    LogMessage("Failed AE to " + nodeId + ". Setting nextIndex to " + NextIndex[nodeId]);
                     // Entry failed to be appended
                     if (NextIndex[nodeId] > 0) {
                         NextIndex[nodeId]--;
@@ -454,6 +455,12 @@ namespace RaftCore {
             else
                 state = NodeState.ToString();
             return "Node (" + NodeId + ") -- " + state;
+        }
+
+        private void LogMessage(string msg) {
+            #if (DEBUG)  
+            Console.WriteLine(msg);
+            #endif  
         }
 
     }

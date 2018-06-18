@@ -167,7 +167,7 @@ namespace RaftCoreTest {
 
             }
 
-            Array.ForEach(nodes, x => Console.WriteLine(x.ToString()));
+            // Array.ForEach(nodes, x => Console.WriteLine(x.ToString()));
             Array.ForEach(nodes, x => x.Stop());
 
             if (followers == nodeCount) {
@@ -194,7 +194,7 @@ namespace RaftCoreTest {
 
 
         // Running the test by leaving the reason empty doesn't seem to work for theories(?)
-        // [Theory (Skip =  "")]
+        // [Theory (Skip =  "time")]
         [Theory]
         [InlineData(2)]
         [InlineData(3)]
@@ -238,7 +238,7 @@ namespace RaftCoreTest {
             Thread.Sleep(1500);
 
             foreach (var node in nodes) {
-                Console.WriteLine(node.ToString());
+                // Console.WriteLine(node.ToString());
                 Assert.Equal("SET X 10", node.Log[0].Command);
                 Assert.Equal(0, node.Log[0].Index);
                 Assert.Equal("SET Y 22", node.Log[1].Command);
@@ -249,18 +249,26 @@ namespace RaftCoreTest {
             Array.ForEach(nodes, x => x.Stop());
         }
 
-        [Fact (Skip =  "time")]
+        [Fact (Skip =  "")]
         public void TestStartLotsOfNodes() {
-            RaftNode[] nodes = ConfigureRaftCluster(40, SM.Dictionary);
+            RaftNode[] nodes = ConfigureRaftCluster(3000, SM.Dictionary);
             foreach (RaftNode node in nodes) {
                 node.Run();
             }
 
             Thread.Sleep(2500);
 
+            nodes[0].MakeRequest("SET X 10");
+
+            Thread.Sleep(2500);
+
             Array.ForEach(nodes, x => Assert.NotNull(x.LeaderId));
 
             Array.ForEach(nodes, x => x.Stop());
+
+            foreach (var node in nodes) {
+                Assert.Equal("10", node.StateMachine.RequestStatus("X"));
+            }
         }
     }
 }
