@@ -27,9 +27,12 @@ namespace RaftCore.Connections.Implementations {
             return Node.AppendEntries(term, leaderId, prevLogIndex, prevLogTerm, entries, leaderCommit);
         }
 
-        // TODO: Internal?
         public void TestConnection() {
             Node.TestConnection();
+        }
+
+        public void Run() {
+            Node.Run();
         }
 
     }

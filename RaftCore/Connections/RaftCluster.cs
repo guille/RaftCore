@@ -20,6 +20,11 @@ namespace RaftCore.Connections {
             }
         }
 
+        public void RunAllNodes() {
+            Parallel.ForEach(nodes, x => x.Run());
+            // nodes.AsParallel().ForEach();
+        }
+
         /// <summary>
         /// Adds a node's <see cref="IRaftConnector"/> to the cluster.
         /// </summary>

@@ -28,7 +28,7 @@ namespace RaftCoreTest {
             node.AppendEntries(1, 2, 0, 0, new List<LogEntry>() { entry1, entry2 }, 0);
             var committed = node.GetCommittedEntries();
             Assert.NotEmpty(committed);
-            Assert.Equal(1, committed.Count);
+            Assert.Single(committed);
             Assert.Equal(2, node.Log.Count);
             Assert.Equal(entry1, committed[0]);
 

@@ -12,9 +12,10 @@ namespace RaftCoreTest {
         // TODO: Move next function to new package (test.util)
 
         internal enum SM { Numeral, Dictionary };
+
         
         // Creates and returns a configured array of raftnodes using the test cluster
-        private RaftNode[] ConfigureRaftCluster(int numberOfNodes, SM sm) {
+        private RaftNode[] ConfigureRaftCluster(int numberOfNodes, SM sm, out RaftCluster cluster) {
             RaftNode[] nodes = new RaftNode[numberOfNodes];
             
             // Create nodes
@@ -25,9 +26,9 @@ namespace RaftCoreTest {
                 else {
                     nodes[i] = new RaftNode(i, new DictionaryStateMachine());
                 }
-
             }
 
+            cluster = new RaftCluster();
             // Adding them to a cluster and configuring them
             foreach (RaftNode node in nodes) {
                 var c = new RaftCluster();
@@ -35,9 +36,16 @@ namespace RaftCoreTest {
                 node.Configure(c);
             }
 
+            cluster = nodes[0].Cluster;
             return nodes;
         }
 
+        private RaftNode[] ConfigureAndRunRaftCluster(int numberOfNodes, SM sm) {
+            RaftCluster c;
+            RaftNode[] nodes = ConfigureRaftCluster(numberOfNodes, sm, out c);
+            c.RunAllNodes();
+            return nodes;
+        }
 
         /*********************************
         *    Dictionary State Machine    *
@@ -49,11 +57,7 @@ namespace RaftCoreTest {
         public void TestLogReplicationDictionary() {
             // Only test log replication works
             int nodeCount = 3;
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
-
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(nodeCount, SM.Dictionary);
 
             Thread.Sleep(1500);
 
@@ -77,13 +81,9 @@ namespace RaftCoreTest {
         public void TestDictionaryStateMachineReplication() {
             // Goes further and tests state machine
             int nodeCount = 3;
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(nodeCount, SM.Dictionary);
 
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
-
-            Thread.Sleep(1000);
+            Thread.Sleep(1500);
 
             nodes[0].MakeRequest("SET X 10");
 
@@ -107,11 +107,7 @@ namespace RaftCoreTest {
         public void TestNumeralStateMachineReplication() {
             // Goes further and tests state machine
             int nodeCount = 3;
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Numeral);
-
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(nodeCount, SM.Numeral);
 
             Thread.Sleep(1500);
 
@@ -138,11 +134,7 @@ namespace RaftCoreTest {
         [Fact (Skip =   "")]
         public void TestLeaderElection() {
             int nodeCount = 3;
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
-
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(nodeCount, SM.Dictionary);
 
             Thread.Sleep(1500);
 
@@ -189,11 +181,11 @@ namespace RaftCoreTest {
         [InlineData(3)]
         [InlineData(5)]
         public void TestDifferentElectionTimeouts(int nodeCount) {
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
+            var c = new RaftCluster();
+            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary, out c);
             
             // Tests all the election timeouts are different
             // Could fail
-
             foreach (var node in nodes) {
                 int matches = 0;
                 foreach (var node2 in nodes) {
@@ -207,11 +199,7 @@ namespace RaftCoreTest {
         [Fact (Skip =  "")]
         public void TestStopRestartNode() {
             int nodeCount = 3;
-            RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
-            
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(nodeCount, SM.Dictionary);
 
             Thread.Sleep(1500);
 
@@ -220,7 +208,7 @@ namespace RaftCoreTest {
             nodes[0].MakeRequest("SET X 10");
             nodes[1].MakeRequest("SET Y 22");
 
-            Thread.Sleep(2500);
+            Thread.Sleep(1500);
 
             nodes[2].Restart();
 
@@ -238,13 +226,10 @@ namespace RaftCoreTest {
             Array.ForEach(nodes, x => x.Stop());
         }
 
-        [Fact (Skip =  "")]
+        [Fact (Skip =  "time")]
         public void TestStartLotsOfNodes() {
-            RaftNode[] nodes = ConfigureRaftCluster(3000, SM.Dictionary);
-            foreach (RaftNode node in nodes) {
-                node.Run();
-            }
-
+            RaftNode[] nodes = ConfigureAndRunRaftCluster(3000, SM.Dictionary);
+            
             Thread.Sleep(2500);
 
             nodes[0].MakeRequest("SET X 10");
