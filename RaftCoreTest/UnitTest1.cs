@@ -50,19 +50,10 @@ namespace RaftCoreTest {
             // Only test log replication works
             int nodeCount = 3;
             RaftNode[] nodes = ConfigureRaftCluster(nodeCount, SM.Dictionary);
-            // Thread[] threads = new Thread[nodeCount];
-            // int i = 0;
 
             foreach (RaftNode node in nodes) {
                 node.Run();
-                // threads[i] = new Thread(node.Run);
-                // threads[i].Start();
-                // i++;
             }
-
-            // foreach (Thread thread in threads) {
-            //     thread.Join();
-            // }
 
             Thread.Sleep(1500);
 
@@ -70,8 +61,6 @@ namespace RaftCoreTest {
             nodes[1].MakeRequest("SET Y 22");
 
             Thread.Sleep(1500);
-
-            // Array.ForEach(nodes, x => Console.WriteLine(x.ToString()));
 
             foreach (var node in nodes) {
                 Assert.Equal("SET X 10", node.Log[0].Command);
