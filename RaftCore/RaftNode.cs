@@ -129,7 +129,7 @@ namespace RaftCore {
         public Result<bool> AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, 
                                   List<LogEntry> entries, int leaderCommit) {
             if (NodeState == NodeState.Stopped) {
-                return new Result<bool>(entries == null, CurrentTerm);
+                return new Result<bool>(false, CurrentTerm);
             }
             if (term < this.CurrentTerm) {
                 LogMessage("Received AppendEntries with outdated term. Declining.");
@@ -388,6 +388,7 @@ namespace RaftCore {
 
             Parallel.ForEach(nodes, nodeId => 
             {
+                if (!NextIndex.ContainsKey(nodeId)) return; // Prevents errors when testing
                 var prevLogIndex = Math.Max(0, NextIndex[nodeId] - 1);
                 int prevLogTerm = (Log.Count > 0) ? prevLogTerm = Log[prevLogIndex].TermNumber : 0;
 
@@ -429,7 +430,7 @@ namespace RaftCore {
             for(int i = CommitIndex + 1; i < Log.Count; i++) {
                 // We add 1 because we know the entry is replicated in this node
                 var replicatedIn = MatchIndex.Values.Count(x => x >= i) + 1;
-                if (Log[i].TermNumber == CurrentTerm && replicatedIn > GetMajority()) {
+                if (Log[i].TermNumber == CurrentTerm && replicatedIn >= GetMajority()) {
                     CommitIndex = i;
                     StateMachine.Apply(Log[i].Command);
                     LastApplied = i;
