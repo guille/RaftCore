@@ -22,7 +22,6 @@ namespace RaftCore.Connections {
 
         public void RunAllNodes() {
             Parallel.ForEach(nodes, x => x.Run());
-            // nodes.AsParallel().ForEach();
         }
 
         /// <summary>
@@ -45,21 +44,18 @@ namespace RaftCore.Connections {
         /// <summary>
         /// Randomly calculates the election timeout for a node in the cluster.
         /// This calculation is based on the return value of <see cref="CalculateBroadcastTimeMS"/>
-        /// The election timeout will be a random number between 12 and 32 times that of the broadcast time
+        /// The election timeout will be a random number between 12 and 32 times that of the broadcast time.
         /// </summary>
         /// <returns>A randomized election timeout appropiate to the cluster size and characteristics</returns>
         public int CalculateElectionTimeoutMS() {
-            int broadcastTime = Math.Max(25, CalculateBroadcastTimeMS());
-            Random rand = new Random(); // TODO: Change seed? broadcast * current time?
+            int broadcastTime = CalculateBroadcastTimeMS();
+            Random rand = new Random();
             // Ensures the election timeout is one order of magnitude bigger than the broadcast time
             return rand.Next(broadcastTime * 12, broadcastTime * 32);
         }
 
-        // TODO: It's always 0 now
-        // measure how much it takes to send and receive a request
-        // to each node,& return the average
         /// <summary>
-        /// Calculates the broadcast time: . That is, the average time it takes a server to:
+        /// Calculates the broadcast time: That is, the average time it takes a server to:
         /// <list type="number">
         /// <item>
         /// <description>send RPCs in parallel to every server in the cluster</description>
