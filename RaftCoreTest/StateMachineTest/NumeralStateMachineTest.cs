@@ -18,7 +18,7 @@ namespace RaftCoreTest.StateMachineTest {
         [Fact]
         public void TestStateMachineIgnoresInvalidRequest() {
             var testSM = new NumeralStateMachine();
-            Assert.Equal("0", testSM.RequestStatus(""));
+            Assert.Equal("0", testSM.RequestStatus(null));
             testSM.Apply("bad request");
             testSM.Apply("+-1");
             testSM.Apply("-1.9");

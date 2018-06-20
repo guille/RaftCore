@@ -2,7 +2,7 @@
 
 namespace RaftCore.StateMachine.Implementations {
     public class NumeralStateMachine : IRaftStateMachine {
-        int state = 0;
+        private int state = 0;
 
         public void Apply(String command) {
             try {
