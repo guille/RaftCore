@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using RaftCore.StateMachine;
 
 namespace RaftCore.StateMachine.Implementations {
-    public class DictionaryStateMachine : RaftCoreStateMachine {
+    public class DictionaryStateMachine : IRaftStateMachine {
         Dictionary<string, int> state =
             new Dictionary<string, int>();
 

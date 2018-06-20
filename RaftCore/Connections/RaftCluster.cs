@@ -10,7 +10,7 @@ namespace RaftCore.Connections {
     /// Represents a cluster of Raft nodes. Contains one <see cref="IRaftConnector"/> for each node.
     /// </summary>
     public class RaftCluster {
-        List<IRaftConnector> nodes = new List<IRaftConnector>();
+        private List<IRaftConnector> nodes = new List<IRaftConnector>();
 
         /// <summary>
         /// Number of nodes in the cluster.

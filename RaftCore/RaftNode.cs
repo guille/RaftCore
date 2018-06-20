@@ -24,7 +24,7 @@ namespace RaftCore {
         /// </summary>
         public uint NodeId { get; }
 
-        public RaftCoreStateMachine StateMachine { get; private set; }
+        public IRaftStateMachine StateMachine { get; private set; }
         public RaftCluster Cluster { get; private set; }
         public List<LogEntry> Log { get; private set; }
 
@@ -66,8 +66,8 @@ namespace RaftCore {
         /// Initializes a new instance of the <see cref="RaftNode"/> class.
         /// </summary>
         /// <param name="nodeId">The node's ID</param>
-        /// <param name="stateMachine"><see cref="RaftCoreStateMachine"/> to replicate</param>
-        public RaftNode(uint nodeId, RaftCoreStateMachine stateMachine) {
+        /// <param name="stateMachine"><see cref="IRaftStateMachine"/> to replicate</param>
+        public RaftNode(uint nodeId, IRaftStateMachine stateMachine) {
             this.NodeId = nodeId;
             this.StateMachine = stateMachine;
             this.Log = new List<LogEntry>();
