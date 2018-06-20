@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RaftCore.Components;
 
 namespace RaftCore.Connections {
     /// <summary>

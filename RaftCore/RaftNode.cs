@@ -3,6 +3,7 @@
 
 using RaftCore.StateMachine;
 using RaftCore.Connections;
+using RaftCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;

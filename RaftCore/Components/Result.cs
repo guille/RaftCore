@@ -1,6 +1,6 @@
 using System;
 
-namespace RaftCore {
+namespace RaftCore.Components {
 	// TODO: Internal/protected?
     public class Result<T> {
         public T Value { get; }

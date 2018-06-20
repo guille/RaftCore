@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RaftCore {
+namespace RaftCore.Components {
   public class LogEntry {
     // term when entry was received by leader
     public int TermNumber { get; }

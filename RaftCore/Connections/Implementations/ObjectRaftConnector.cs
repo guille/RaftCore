@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using RaftCore;
 using RaftCore.Connections;
+using RaftCore.Components;
 
 namespace RaftCore.Connections.Implementations {
     public class ObjectRaftConnector : IRaftConnector {

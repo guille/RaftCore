@@ -6,6 +6,7 @@ using RaftCore;
 using RaftCore.StateMachine.Implementations;
 using RaftCore.Connections;
 using RaftCore.Connections.Implementations;
+using RaftCore.Components;
 using RaftCoreTest.Util;
 
 namespace RaftCoreTest {
