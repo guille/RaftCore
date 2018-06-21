@@ -15,8 +15,4 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="docfx.console" Version="2.36.2" />
-  </ItemGroup>
-
 </Project>
