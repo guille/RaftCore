@@ -173,7 +173,7 @@ namespace RaftCoreTest {
 
             nodes[0].MakeRequest("SET X 10");
 
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
 
             Array.ForEach(nodes, x => Assert.NotNull(x.LeaderId));
 
