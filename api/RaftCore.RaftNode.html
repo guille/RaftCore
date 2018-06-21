@@ -1,0 +1,936 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class RaftNode
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class RaftNode
+   ">
+    <meta name="generator" content="docfx 2.36.2.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="RaftCore.RaftNode">
+  
+  
+  <h1 id="RaftCore_RaftNode" data-uid="RaftCore.RaftNode" class="text-break">Class RaftNode
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a node as defined by Raft's algorithm.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">RaftNode</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="RaftCore.html">RaftCore</a></h6>
+  <h6><strong>Assembly</strong>: RaftCore.dll</h6>
+  <h5 id="RaftCore_RaftNode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class RaftNode</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode__ctor_System_UInt32_RaftCore_StateMachine_IRaftStateMachine_.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.%23ctor(System.UInt32%2CRaftCore.StateMachine.IRaftStateMachine)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L121">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode__ctor_" data-uid="RaftCore.RaftNode.#ctor*"></a>
+  <h4 id="RaftCore_RaftNode__ctor_System_UInt32_RaftCore_StateMachine_IRaftStateMachine_" data-uid="RaftCore.RaftNode.#ctor(System.UInt32,RaftCore.StateMachine.IRaftStateMachine)">RaftNode(UInt32, IRaftStateMachine)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="RaftCore.RaftNode.html">RaftNode</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RaftNode(uint nodeId, IRaftStateMachine stateMachine)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">nodeId</span></td>
+        <td><p>The node's ID</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="RaftCore.StateMachine.IRaftStateMachine.html">IRaftStateMachine</a></td>
+        <td><span class="parametername">stateMachine</span></td>
+        <td><p><a class="xref" href="RaftCore.StateMachine.IRaftStateMachine.html">IRaftStateMachine</a> to replicate</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Cluster.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Cluster%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L53">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Cluster_" data-uid="RaftCore.RaftNode.Cluster*"></a>
+  <h4 id="RaftCore_RaftNode_Cluster" data-uid="RaftCore.RaftNode.Cluster">Cluster</h4>
+  <div class="markdown level1 summary"><p>Represents the cluster this node is part of.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RaftCluster Cluster { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.Connections.RaftCluster.html">RaftCluster</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_CommitIndex.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.CommitIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L75">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_CommitIndex_" data-uid="RaftCore.RaftNode.CommitIndex*"></a>
+  <h4 id="RaftCore_RaftNode_CommitIndex" data-uid="RaftCore.RaftNode.CommitIndex">CommitIndex</h4>
+  <div class="markdown level1 summary"><p>Index of highest lof entry known to be committed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CommitIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_CurrentTerm.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.CurrentTerm%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L102">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_CurrentTerm_" data-uid="RaftCore.RaftNode.CurrentTerm*"></a>
+  <h4 id="RaftCore_RaftNode_CurrentTerm" data-uid="RaftCore.RaftNode.CurrentTerm">CurrentTerm</h4>
+  <div class="markdown level1 summary"><p>Latest term the node has seen</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int CurrentTerm { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_ElectionTimeoutMS.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.ElectionTimeoutMS%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L84">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_ElectionTimeoutMS_" data-uid="RaftCore.RaftNode.ElectionTimeoutMS*"></a>
+  <h4 id="RaftCore_RaftNode_ElectionTimeoutMS" data-uid="RaftCore.RaftNode.ElectionTimeoutMS">ElectionTimeoutMS</h4>
+  <div class="markdown level1 summary"><p>The node's election timeout in milliseconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int ElectionTimeoutMS { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_LastApplied.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.LastApplied%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L79">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_LastApplied_" data-uid="RaftCore.RaftNode.LastApplied*"></a>
+  <h4 id="RaftCore_RaftNode_LastApplied" data-uid="RaftCore.RaftNode.LastApplied">LastApplied</h4>
+  <div class="markdown level1 summary"><p>Index of highest log entry applied to state machine.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int LastApplied { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_LeaderId.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.LeaderId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L67">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_LeaderId_" data-uid="RaftCore.RaftNode.LeaderId*"></a>
+  <h4 id="RaftCore_RaftNode_LeaderId" data-uid="RaftCore.RaftNode.LeaderId">LeaderId</h4>
+  <div class="markdown level1 summary"><p>ID of the node identified as leader, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint? LeaderId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Log.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Log%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L57">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Log_" data-uid="RaftCore.RaftNode.Log*"></a>
+  <h4 id="RaftCore_RaftNode_Log" data-uid="RaftCore.RaftNode.Log">Log</h4>
+  <div class="markdown level1 summary"><p>Log of entries to replicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;LogEntry&gt; Log { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="RaftCore.Components.LogEntry.html">LogEntry</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_MatchIndex.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.MatchIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L96">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_MatchIndex_" data-uid="RaftCore.RaftNode.MatchIndex*"></a>
+  <h4 id="RaftCore_RaftNode_MatchIndex" data-uid="RaftCore.RaftNode.MatchIndex">MatchIndex</h4>
+  <div class="markdown level1 summary"><p>For each node, index of highest log entry known to be replicated on that node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;uint, int&gt; MatchIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.UInt32</span>, <span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_NextIndex.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.NextIndex%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L92">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_NextIndex_" data-uid="RaftCore.RaftNode.NextIndex*"></a>
+  <h4 id="RaftCore_RaftNode_NextIndex" data-uid="RaftCore.RaftNode.NextIndex">NextIndex</h4>
+  <div class="markdown level1 summary"><p>For each node, index of next log entry to send to that node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;uint, int&gt; NextIndex { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.UInt32</span>, <span class="xref">System.Int32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_NodeId.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.NodeId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L44">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_NodeId_" data-uid="RaftCore.RaftNode.NodeId*"></a>
+  <h4 id="RaftCore_RaftNode_NodeId" data-uid="RaftCore.RaftNode.NodeId">NodeId</h4>
+  <div class="markdown level1 summary"><p>Unsigned integer uniquely representing a node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint NodeId { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_NodeState.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.NodeState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L62">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_NodeState_" data-uid="RaftCore.RaftNode.NodeState*"></a>
+  <h4 id="RaftCore_RaftNode_NodeState" data-uid="RaftCore.RaftNode.NodeState">NodeState</h4>
+  <div class="markdown level1 summary"><p>Current state of the node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public NodeState NodeState { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.NodeState.html">NodeState</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_StateMachine.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.StateMachine%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L49">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_StateMachine_" data-uid="RaftCore.RaftNode.StateMachine*"></a>
+  <h4 id="RaftCore_RaftNode_StateMachine" data-uid="RaftCore.RaftNode.StateMachine">StateMachine</h4>
+  <div class="markdown level1 summary"><p>State machine this node replicates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IRaftStateMachine StateMachine { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.StateMachine.IRaftStateMachine.html">IRaftStateMachine</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_VotedFor.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.VotedFor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L71">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_VotedFor_" data-uid="RaftCore.RaftNode.VotedFor*"></a>
+  <h4 id="RaftCore_RaftNode_VotedFor" data-uid="RaftCore.RaftNode.VotedFor">VotedFor</h4>
+  <div class="markdown level1 summary"><p>ID of the candidate that received vote in current term, if any.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint? VotedFor { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Nullable</span>&lt;<span class="xref">System.UInt32</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_AppendEntries_System_Int32_System_UInt32_System_Int32_System_Int32_System_Collections_Generic_List_RaftCore_Components_LogEntry__System_Int32_.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.AppendEntries(System.Int32%2CSystem.UInt32%2CSystem.Int32%2CSystem.Int32%2CSystem.Collections.Generic.List%7BRaftCore.Components.LogEntry%7D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L181">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_AppendEntries_" data-uid="RaftCore.RaftNode.AppendEntries*"></a>
+  <h4 id="RaftCore_RaftNode_AppendEntries_System_Int32_System_UInt32_System_Int32_System_Int32_System_Collections_Generic_List_RaftCore_Components_LogEntry__System_Int32_" data-uid="RaftCore.RaftNode.AppendEntries(System.Int32,System.UInt32,System.Int32,System.Int32,System.Collections.Generic.List{RaftCore.Components.LogEntry},System.Int32)">AppendEntries(Int32, UInt32, Int32, Int32, List&lt;LogEntry&gt;, Int32)</h4>
+  <div class="markdown level1 summary"><p>Invoked by a leader node to replicate log entries or send heartbeats.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Result&lt;bool&gt; AppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, List&lt;LogEntry&gt; entries, int leaderCommit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">term</span></td>
+        <td><p>Leader's current term number</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">leaderId</span></td>
+        <td><p>ID of the node invoking this method</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">prevLogIndex</span></td>
+        <td><p>Index of log immediately preceding new ones</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">prevLogTerm</span></td>
+        <td><p>Term of prevLogIndex entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="RaftCore.Components.LogEntry.html">LogEntry</a>&gt;</td>
+        <td><span class="parametername">entries</span></td>
+        <td><p>List of entries sent to be replicated. null for heartbeat</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">leaderCommit</span></td>
+        <td><p>Leader's CommitIndex</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.Components.Result-1.html">Result</a>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Returns a Result object containing the current term of the node and whether the request worked</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Configure_RaftCore_Connections_RaftCluster_.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Configure(RaftCore.Connections.RaftCluster)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L137">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Configure_" data-uid="RaftCore.RaftNode.Configure*"></a>
+  <h4 id="RaftCore_RaftNode_Configure_RaftCore_Connections_RaftCluster_" data-uid="RaftCore.RaftNode.Configure(RaftCore.Connections.RaftCluster)">Configure(RaftCluster)</h4>
+  <div class="markdown level1 summary"><p>Configures the node: adds the cluster object, calculates the election timeout and sets the initial state to Follower.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Configure(RaftCluster cluster)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.Connections.RaftCluster.html">RaftCluster</a></td>
+        <td><span class="parametername">cluster</span></td>
+        <td><p><a class="xref" href="RaftCore.Connections.RaftCluster.html">RaftCluster</a> instance containing all the nodes in the cluster</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_GetCommittedEntries.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.GetCommittedEntries%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L317">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_GetCommittedEntries_" data-uid="RaftCore.RaftNode.GetCommittedEntries*"></a>
+  <h4 id="RaftCore_RaftNode_GetCommittedEntries" data-uid="RaftCore.RaftNode.GetCommittedEntries">GetCommittedEntries()</h4>
+  <div class="markdown level1 summary"><p>Determines the elements in the log that have been committed, as far as the node knows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;LogEntry&gt; GetCommittedEntries()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="RaftCore.Components.LogEntry.html">LogEntry</a>&gt;</td>
+        <td><p>List of entries in the log known to be committed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_MakeRequest_System_String_.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.MakeRequest(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L286">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_MakeRequest_" data-uid="RaftCore.RaftNode.MakeRequest*"></a>
+  <h4 id="RaftCore_RaftNode_MakeRequest_System_String_" data-uid="RaftCore.RaftNode.MakeRequest(System.String)">MakeRequest(String)</h4>
+  <div class="markdown level1 summary"><p>Called by a client to make a request to the node.
+If the node is the leader, appends the entry to its log.
+Otherwise, it waits until it finds a leader and redirects the request to them.
+The request might be redirected to another node if it can't find a leader</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void MakeRequest(string command)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">command</span></td>
+        <td><p>String forming a command recognisable by the state machine</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_RequestVote_System_Int32_System_UInt32_System_Int32_System_Int32_.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.RequestVote(System.Int32%2CSystem.UInt32%2CSystem.Int32%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L253">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_RequestVote_" data-uid="RaftCore.RaftNode.RequestVote*"></a>
+  <h4 id="RaftCore_RaftNode_RequestVote_System_Int32_System_UInt32_System_Int32_System_Int32_" data-uid="RaftCore.RaftNode.RequestVote(System.Int32,System.UInt32,System.Int32,System.Int32)">RequestVote(Int32, UInt32, Int32, Int32)</h4>
+  <div class="markdown level1 summary"><p>Invoked by candidates to request a vote from this node.
+It uses the parameters provided to check whether the candidate is more up to date than this node.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Result&lt;bool&gt; RequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">term</span></td>
+        <td><p>Term of the candidate</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="parametername">candidateId</span></td>
+        <td><p>Node ID of the candidate</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">lastLogIndex</span></td>
+        <td><p>Index of candidate's last log entry</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">lastLogTerm</span></td>
+        <td><p>Term of candidate's last log entry</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="RaftCore.Components.Result-1.html">Result</a>&lt;<span class="xref">System.Boolean</span>&gt;</td>
+        <td><p>Returns a Result object containing the current term of the node and whether it grants the requested vote</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Restart.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Restart%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L371">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Restart_" data-uid="RaftCore.RaftNode.Restart*"></a>
+  <h4 id="RaftCore_RaftNode_Restart" data-uid="RaftCore.RaftNode.Restart">Restart()</h4>
+  <div class="markdown level1 summary"><p>Changes the node's state to Follower if it was stopped. It does nothing otherwise.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Restart()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Run.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Run%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L147">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Run_" data-uid="RaftCore.RaftNode.Run*"></a>
+  <h4 id="RaftCore_RaftNode_Run" data-uid="RaftCore.RaftNode.Run">Run()</h4>
+  <div class="markdown level1 summary"><p>Invoked after a change of state, or to start the node's execution for the first time.
+Initializes the timers and state appropiate to the node's state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Run()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_Stop.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.Stop%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L382">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_Stop_" data-uid="RaftCore.RaftNode.Stop*"></a>
+  <h4 id="RaftCore_RaftNode_Stop" data-uid="RaftCore.RaftNode.Stop">Stop()</h4>
+  <div class="markdown level1 summary"><p>Changes the node's state to Stopped. A node won't accept RPCs while in this state,</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Stop()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode_ToString.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L507">View Source</a>
+  </span>
+  <a id="RaftCore_RaftNode_ToString_" data-uid="RaftCore.RaftNode.ToString*"></a>
+  <h4 id="RaftCore_RaftNode_ToString" data-uid="RaftCore.RaftNode.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Returns a readable representation of the node, containing its state and id..</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>String representation of the node.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/guille/RaftCore/new/master/apiSpec/new?filename=RaftCore_RaftNode.md&amp;value=---%0Auid%3A%20RaftCore.RaftNode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/guille/RaftCore/blob/master/RaftCore/RaftNode.cs/#L39" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

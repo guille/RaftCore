@@ -1,0 +1,296 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/Users/guille/Desktop/RaftCore/RaftCore/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Components.LogEntry.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Components.LogEntry.html",
+          "hash": "7Vz2cWJyhn4LvmKjxhl0vw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Components.Result-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Components.Result-1.html",
+          "hash": "eJSifrW49758W+NHds9vtA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Components.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Components.html",
+          "hash": "V0D6lqw8lvFMHx3U5dQ1Yw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.IRaftConnector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.IRaftConnector.html",
+          "hash": "sPnSONkI7NKzDguO/vSjkw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.Implementations.APIRaftConnector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.Implementations.APIRaftConnector.html",
+          "hash": "3bYz9dCg6PrPKhgPRErwDg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.Implementations.ObjectRaftConnector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.Implementations.ObjectRaftConnector.html",
+          "hash": "eXoBRBhIXeGBlg5PxeMaBg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.Implementations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.Implementations.html",
+          "hash": "DFSgL8drBEiS69EZTRiiwQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.RaftCluster.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.RaftCluster.html",
+          "hash": "HAAoBXHJSyS2LmykIHq7Nw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.Connections.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.Connections.html",
+          "hash": "ULQbRf1jeLHuXjVtkTEYxQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.NodeState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.NodeState.html",
+          "hash": "KaA7YkIaS5YhuNFwZQgnkA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.RaftNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.RaftNode.html",
+          "hash": "NYeySLasSpVbuxd+A/83Kw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.StateMachine.IRaftStateMachine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.StateMachine.IRaftStateMachine.html",
+          "hash": "6dBVgD2PAAwue8OeQ8qS1w=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.StateMachine.Implementations.DictionaryStateMachine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.StateMachine.Implementations.DictionaryStateMachine.html",
+          "hash": "1z3fSfBlHXt/LiDtVVB3yw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.StateMachine.Implementations.NumeralStateMachine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.StateMachine.Implementations.NumeralStateMachine.html",
+          "hash": "P88tzF6tvDyuW1gOdxUDlA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.StateMachine.Implementations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.StateMachine.Implementations.html",
+          "hash": "In5FhQM4evyag0bfrBykhw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.StateMachine.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.StateMachine.html",
+          "hash": "wZYzkq1JrjkWQEEiWfUYVA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/RaftCore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/RaftCore.html",
+          "hash": "GDeW3uAa9sL6d50ySHwjEQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "xMgIQgCVOaTn0iWwWu3zSg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "xvMn0KLDn/p8az8GCdDaqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "kb81FDGML/wqAiuD1rzgIg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "UdizOnhfwcdLPP9dTq9DkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build"
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
