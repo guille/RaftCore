@@ -44,7 +44,5 @@ namespace RaftCore.Connections {
         /// Calls the TestConnection method on the node.
         /// </summary>
         void TestConnection();
-
-        void Run();
     }
 }

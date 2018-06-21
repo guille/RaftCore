@@ -167,13 +167,13 @@ namespace RaftCoreTest {
 
         [Fact (Skip =  "time")]
         public void TestStartLotsOfNodes() {
-            RaftNode[] nodes = TestMethods.ConfigureAndRunRaftCluster(3000, SM.Dictionary);
+            RaftNode[] nodes = TestMethods.ConfigureAndRunRaftCluster(5000, SM.Dictionary);
             
-            Thread.Sleep(2500);
+            Thread.Sleep(2000);
 
             nodes[0].MakeRequest("SET X 10");
 
-            Thread.Sleep(2500);
+            Thread.Sleep(1500);
 
             Array.ForEach(nodes, x => Assert.NotNull(x.LeaderId));
 

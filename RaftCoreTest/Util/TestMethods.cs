@@ -22,7 +22,7 @@ namespace RaftCoreTest.Util {
         }
         
         // Creates and returns a configured array of raftnodes using the test cluster
-        static internal RaftNode[] ConfigureRaftCluster(int numberOfNodes, SM sm, out RaftCluster cluster) {
+        static internal RaftNode[] ConfigureRaftCluster(int numberOfNodes, SM sm) {
             RaftNode[] nodes = new RaftNode[numberOfNodes];
             
             // Create nodes
@@ -35,7 +35,6 @@ namespace RaftCoreTest.Util {
                 }
             }
 
-            cluster = new RaftCluster();
             // Adding them to a cluster and configuring them
             foreach (RaftNode node in nodes) {
                 var c = new RaftCluster();
@@ -43,14 +42,12 @@ namespace RaftCoreTest.Util {
                 node.Configure(c);
             }
 
-            cluster = nodes[0].Cluster;
             return nodes;
         }
 
         static internal RaftNode[] ConfigureAndRunRaftCluster(int numberOfNodes, SM sm) {
-            RaftCluster c;
-            RaftNode[] nodes = ConfigureRaftCluster(numberOfNodes, sm, out c);
-            c.RunAllNodes();
+            RaftNode[] nodes = ConfigureRaftCluster(numberOfNodes, sm);
+            Array.ForEach(nodes, node => node.Run());
             return nodes;
         }
     }

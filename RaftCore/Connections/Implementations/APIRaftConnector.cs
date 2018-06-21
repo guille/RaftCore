@@ -39,10 +39,5 @@ namespace RaftCore.Connections.Implementations {
         public void TestConnection() {
             // make POST <baseurl>/test
         }
-
-        public void Run() {
-            // make POST <baseurl>/run
-        }
-
     }
 }

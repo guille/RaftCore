@@ -31,10 +31,5 @@ namespace RaftCore.Connections.Implementations {
         public void TestConnection() {
             Node.TestConnection();
         }
-
-        public void Run() {
-            Node.Run();
-        }
-
     }
 }
