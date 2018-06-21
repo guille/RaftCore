@@ -6,7 +6,6 @@ using RaftCore.Connections;
 using RaftCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
@@ -15,8 +14,28 @@ namespace RaftCore {
     /// <summary>
     /// Possible states a node can be in
     /// </summary>
-    public enum NodeState { Leader, Follower, Candidate, Stopped };
+    public enum NodeState {
+        /// <summary>
+        /// Represents the node is in leader state, as defined by the Raft specification
+        /// </summary>
+        Leader,
+        /// <summary>
+        /// Represents the node is in follower state, as defined by the Raft specification
+        /// </summary>
+        Follower,
+        /// <summary>
+        /// Represents the node is in candidate state, as defined by the Raft specification
+        /// </summary>
+        Candidate,
+        /// <summary>
+        /// Represents the node has been stopped (see <see cref="RaftNode.Stop"/> and won't respond to RPCs.
+        /// </summary>
+        Stopped
+    };
 
+    /// <summary>
+    /// Represents a node as defined by Raft's algorithm.
+    /// </summary>
     public class RaftNode {
     	// TODO: Some of these should be stored in non-volatile storage
         /// <summary>
@@ -24,38 +43,70 @@ namespace RaftCore {
         /// </summary>
         public uint NodeId { get; }
 
+        /// <summary>
+        /// State machine this node replicates.
+        /// </summary>
         public IRaftStateMachine StateMachine { get; private set; }
+        /// <summary>
+        /// Represents the cluster this node is part of.
+        /// </summary>
         public RaftCluster Cluster { get; private set; }
+        /// <summary>
+        /// Log of entries to replicate.
+        /// </summary>
         public List<LogEntry> Log { get; private set; }
 
+        /// <summary>
+        /// Current state of the node.
+        /// </summary>
         public NodeState NodeState { get; private set; } = NodeState.Stopped;
 
+        /// <summary>
+        /// ID of the node identified as leader, if any.
+        /// </summary>
         public uint? LeaderId { get; private set; } = null;
+        /// <summary>
+        /// ID of the candidate that received vote in current term, if any.
+        /// </summary>
         public uint? VotedFor { get; private set; } = null;
-        public int VoteCount { get; private set; } = 0;
+        /// <summary>
+        /// Index of highest lof entry known to be committed.
+        /// </summary>
         public int CommitIndex { get; private set; } = -1;
-        public int LastApplied { get; private set; } = 0;
+        /// <summary>
+        /// Index of highest log entry applied to state machine.
+        /// </summary>
+        public int LastApplied { get; private set; } = -1;
 
-        public int ElectionTimeoutMS { get; private set; } // 150-300ms
+        /// <summary>
+        /// The node's election timeout in milliseconds.
+        /// </summary>
+        public int ElectionTimeoutMS { get; private set; }
         private Timer electionTimer;
         private Timer heartbeatTimer;
 
         // Leaders' state
+        /// <summary>
+        /// For each node, index of next log entry to send to that node.
+        /// </summary>
         public Dictionary<uint, int> NextIndex { get; }
+        /// <summary>
+        /// For each node, index of highest log entry known to be replicated on that node.
+        /// </summary>
         public Dictionary<uint, int> MatchIndex { get; }
 
         private int currentTerm = 0;
+        /// <summary>
+        /// Latest term the node has seen
+        /// </summary>
         public int CurrentTerm {
             get {
                 return currentTerm;
             }
-            // Resets LeaderId, VoteCount and VotedFor when it's a term increase
-            // Updates current term to the given value
             private set {
                 if (value > currentTerm) {
                     currentTerm = value;
                     LeaderId = null;
-                    VoteCount = 0;
                     VotedFor = null;
                     NodeState = NodeState.Follower;
                 }
@@ -275,7 +326,7 @@ namespace RaftCore {
             CurrentTerm++;
 
             // Vote for self
-            VoteCount = 1;
+            var voteCount = 1;
             VotedFor = NodeId;
 
             // Start election
@@ -294,10 +345,10 @@ namespace RaftCore {
                     Interlocked.Increment(ref votes);
                 }
             });
-            VoteCount += votes;
+            voteCount += votes;
 
-            if (VoteCount >= GetMajority()) {
-                LogMessage("New leader!! : " + NodeId + " with " + VoteCount + " votes");
+            if (voteCount >= GetMajority()) {
+                LogMessage("New leader!! : " + NodeId + " with " + voteCount + " votes");
                 LeaderId = NodeId;
                 NodeState = NodeState.Leader;
                 Run();
@@ -449,6 +500,10 @@ namespace RaftCore {
             StateMachine.TestConnection();
         }
 
+        /// <summary>
+        /// Returns a readable representation of the node, containing its state and id..
+        /// </summary>
+        /// <returns>String representation of the node.</returns>
         public override string ToString() {
             string state;
             if (NodeState == NodeState.Follower)

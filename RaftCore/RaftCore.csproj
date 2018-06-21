@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
     <PackageId>RaftCore</PackageId>
     <Version>1.0.0</Version>
     <Authors>Guillermo Rodríguez</Authors>
@@ -14,5 +15,9 @@
     <RepositoryUrl>https://github.com/guille/RaftCore.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="docfx.console" Version="2.36.2" />
+  </ItemGroup>
 
 </Project>

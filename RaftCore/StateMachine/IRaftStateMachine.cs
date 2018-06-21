@@ -1,4 +1,7 @@
 ﻿namespace RaftCore.StateMachine {
+    /// <summary>
+    /// Represents a state machine for replication.
+    /// </summary>
     public interface IRaftStateMachine {
         /// <summary>
         /// Applies a command to the state machine. The State Machine will silently ignore bad commands.
