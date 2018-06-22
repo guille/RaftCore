@@ -1,17 +1,17 @@
 circle {
   fill-opacity: 0.5;
 }
-circle.stopped {
+circle.Stopped {
   fill: maroon;
 }
-circle.follower {
+circle.Follower {
   fill: olive;
 }
-circle.leader {
+circle.Leader {
   stroke-width: 3;
   fill: cadetblue;
 }
-circle.candidate {
+circle.Candidate {
   stroke-dasharray: 5,5;
   stroke-width: 3;
   fill: indigo;

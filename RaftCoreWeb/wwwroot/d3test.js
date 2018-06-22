@@ -77,7 +77,7 @@ function updateText() {
 
 }
 
-states = ['candidate', 'stopped', 'leader', 'follower']
+states = ['Candidate', 'Stopped', 'Leader', 'Follower']
 
 function getNodeState(node) {
   if (node === 4)

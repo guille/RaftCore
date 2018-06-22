@@ -4,35 +4,56 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RaftCoreWeb.Services;
+using RaftCore;
 
 namespace RaftCoreWeb.Controllers {
 
-    // [Route("[controller]")]
     [ApiController]
     public class NodesController : ControllerBase {
         private readonly ICluster _cluster;
 
         public NodesController(ICluster cluster) {
             _cluster = cluster;
+            _cluster.GetNode(0).MakeRequest("2");
         }
 
         // GET /nodes/:id
         [HttpGet("[controller]/{id}")]
-        public ActionResult<IEnumerable<string>> GetNode(int id) {
+        public JsonResult GetNode(int id) {
             /* Returns all the relevant properties of the node in json:
-            *      -  State (candidate, leader...)
-            *      -  CurrentTerm
+            * {
+            *    state: "Candidate",
+            *    term: 0
+            * }
             */
-            return new string[] { "candidate" };
+            var st = _cluster.GetNode((uint)id).NodeState.ToString();
+            var termNumber = _cluster.GetNode((uint)id).CurrentTerm;
+            var data = new { state = st, term = termNumber};
+            return new JsonResult(data);
         }
 
         // GET /nodes/:id/log
         [HttpGet("[controller]/{id}/log")]
-        public ActionResult<IEnumerable<string>> GetLog(int id) {
-            // Complex json, returning array of logentries
-            // campos: term, command, index
-            // añadir otro campo 'committed: true/false'
-            return new string[] { "node1", "node2" };
+        public JsonResult GetLog(int id) {
+            /* Complex json, returning array of logentries
+            * [
+            *   {
+            *       term:           1
+            *       command:     "+2"
+            *       committed:  false
+            *   },
+            *   {...}
+            * ]
+            */
+            var log = _cluster.GetNode((uint)id).Log;
+            var commitIndex = _cluster.GetNode((uint)id).CommitIndex;
+            var res = new object[log.Count];
+
+            for (int i = 0; i < log.Count; i++) {
+                bool cm = i < commitIndex;
+                res[i] = new { term = log[i].TermNumber, command = log[i].Command, committed = cm};
+            }
+            return new JsonResult(res);
         }
 
         // GET /nodes/:id/sm
@@ -44,8 +65,13 @@ namespace RaftCoreWeb.Controllers {
 
         // PATCH /nodes
         [HttpPatch("[controller]/{id}")]
-        public void Patch(int id, [FromBody] string value) {
+        public void SwitchState(int id) {
             // Stòp/Restart node <id>
+            var node = _cluster.GetNode((uint)id);
+            if (node.NodeState == NodeState.Stopped)
+                node.Restart();
+            else
+                node.Stop();
         }
     }
 }
