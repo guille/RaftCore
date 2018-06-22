@@ -1,0 +1,82 @@
+circle {
+  fill-opacity: 0.5;
+}
+circle.stopped {
+  fill: maroon;
+}
+circle.follower {
+  fill: olive;
+}
+circle.leader {
+  stroke-width: 3;
+  fill: cadetblue;
+}
+circle.candidate {
+  stroke-dasharray: 5,5;
+  stroke-width: 3;
+  fill: indigo;
+}
+rect {
+  fill-opacity: 0.25;
+  padding-bottom: 5;
+}
+text {
+  text-anchor: middle;
+  fill: #666;
+  font-size: 16px;
+}
+
+#content {
+  margin: auto;
+  display: flex;
+}
+
+#controls {
+  background-color: #f0f0f0;
+  flex: 0;
+}
+
+#visualization {
+  flex: 0;
+}
+
+#log {
+  flex: auto;
+}
+
+#sm {
+  flex: auto;
+}
+
+#legend {
+  flex: auto;
+}
+
+.node_log {
+  height: 50px;
+  background-color: silver;
+  margin-bottom: 10px;
+  width: 500px;
+  display: flex;
+}
+
+.log_entry {
+  flex: initial;
+}
+
+.log-index {
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+}
+
+input {
+  display: block;
+}
+
+legend {
+  font-variant: small-caps;
+}
