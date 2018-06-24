@@ -41,14 +41,14 @@ namespace RaftCore.Connections {
         /// <summary>
         /// Randomly calculates the election timeout for a node in the cluster.
         /// This calculation is based on the return value of <see cref="CalculateBroadcastTimeMS"/>
-        /// The election timeout will be a random number between 12 and 32 times that of the broadcast time.
+        /// The election timeout will be a random number between 12 and 24 times that of the broadcast time.
         /// </summary>
         /// <returns>A randomized election timeout appropiate to the cluster size and characteristics</returns>
         public int CalculateElectionTimeoutMS() {
             int broadcastTime = CalculateBroadcastTimeMS();
             Random rand = new Random();
             // Ensures the election timeout is one order of magnitude bigger than the broadcast time
-            return rand.Next(broadcastTime * 12, broadcastTime * 32);
+            return rand.Next(broadcastTime * 12, broadcastTime * 24);
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿// #define DEBUG
 #undef DEBUG
+#define SIM
+// #undef SIM
 
 using RaftCore.StateMachine;
 using RaftCore.Connections;
@@ -280,7 +282,7 @@ namespace RaftCore {
         /// Called by a client to make a request to the node.
         /// If the node is the leader, appends the entry to its log.
         /// Otherwise, it waits until it finds a leader and redirects the request to them.
-        /// The request might be redirected to another node if it can't find a leader
+        /// The request is dropped if it can't find a leader
         /// </summary>
         /// <param name="command">String forming a command recognisable by the state machine</param>
         public void MakeRequest(String command) {
@@ -290,23 +292,12 @@ namespace RaftCore {
                 var entry = new LogEntry(CurrentTerm, Log.Count, command);
                 Log.Add(entry);
             }
+            else if (NodeState == NodeState.Follower && LeaderId.HasValue) {
+                LogMessage("Redirecting to leader " + LeaderId + " by " + NodeId);
+                Cluster.RedirectRequestToNode(command, LeaderId);
+            }
             else {
-                // Wait until there is a leader (maybe itself)
-                // Then redirect them the request
-                do {
-                    Thread.Sleep(500);
-                } while (!LeaderId.HasValue);
-                uint leader = LeaderId.Value;
-
-                if (leader == NodeId) {
-                    // Redirect to a random node
-                    var randomNode = Cluster.GetNodeIdsExcept(NodeId)[0];
-                    Cluster.RedirectRequestToNode(command, randomNode);
-                }
-                else {
-                    LogMessage("Redirecting to leader " + leader + " by " + NodeId);
-                    Cluster.RedirectRequestToNode(command, leader);
-                }
+                LogMessage("Couldn't find a leader. Dropping request.");
             }
         }
 
@@ -398,6 +389,9 @@ namespace RaftCore {
 
         private void TriggerElection(object arg) {
             NodeState = NodeState.Candidate;
+            #if (SIM)
+            Thread.Sleep(150);
+            #endif
             Run();
         }
 
@@ -514,7 +508,7 @@ namespace RaftCore {
         }
 
         private void LogMessage(string msg) {
-            #if (DEBUG)  
+            #if (DEBUG)
             Console.WriteLine(msg);
             #endif  
         }
