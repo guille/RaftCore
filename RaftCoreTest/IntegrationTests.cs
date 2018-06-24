@@ -144,6 +144,8 @@ namespace RaftCoreTest {
 
             nodes[2].Stop();
 
+            Thread.Sleep(TestMethods.WAIT_MS);
+
             nodes[0].MakeRequest("SET X 10");
             nodes[1].MakeRequest("SET Y 22");
 
