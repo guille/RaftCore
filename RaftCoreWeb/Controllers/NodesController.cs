@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define SIM
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,31 +18,14 @@ namespace RaftCoreWeb.Controllers {
             _cluster = cluster;
         }
 
-        // GET /nodes/:id
-        [HttpGet("[controller]/{id}")]
-        public JsonResult GetNode(int id) {
-            /* Returns all the relevant properties of the node in json:
-            * {
-            *    state: "Candidate",
-            *    term: 0
-            * }
-            */
-            var st = _cluster.GetNode((uint)id).NodeState.ToString();
-            var termNumber = _cluster.GetNode((uint)id).CurrentTerm;
-            var data = new { state = st, term = termNumber};
-            return new JsonResult(data);
-        }
-
         // GET /nodes/states
-        [HttpGet("[controller]/states")]
-        public IEnumerable<string> GetNodeStates() {
-            return _cluster.GetNodes().Select(x => x.NodeState.ToString());
-        }
-
-        // GET /nodes/terms
-        [HttpGet("[controller]/terms")]
-        public IEnumerable<string> GetNodeTerms() {
-            return _cluster.GetNodes().Select(x => x.CurrentTerm.ToString());
+        [HttpGet("[controller]")]
+        public IEnumerable<IEnumerable<string>> GetNodesInfo() {
+            // Returns terms and states
+            var res = new List<IEnumerable<string>>();
+            res.Add(_cluster.GetNodes().Select(x => x.CurrentTerm.ToString()));
+            res.Add(_cluster.GetNodes().Select(x => x.NodeState.ToString()));
+            return res;
         }
 
         // GET /nodes/:id/log
@@ -56,8 +41,10 @@ namespace RaftCoreWeb.Controllers {
             *   {...}
             * ]
             */
-            var log = _cluster.GetNode((uint)id).Log;
-            var commitIndex = _cluster.GetNode((uint)id).CommitIndex;
+            var node = _cluster.GetNode((uint)id);
+
+            var log = node.Log;
+            var commitIndex = node.CommitIndex;
             var res = new object[log.Count];
 
             for (int i = 0; i < log.Count; i++) {
@@ -91,9 +78,11 @@ namespace RaftCoreWeb.Controllers {
         // POST /nodes/requests
         [HttpPost("[controller]/requests")]
         public string MakeRequest() {
-            var req = Request.Form["userRequest"].ToString();
-            var node = _cluster.GetNode(1);
-            node.MakeRequest(req);
+            foreach (var node in _cluster.GetNodes()) {
+                if (node.NodeState == NodeState.Leader) {
+                    node.MakeRequest(Request.Form["userRequest"].ToString());
+                }
+            }
             return "";
         }
     }

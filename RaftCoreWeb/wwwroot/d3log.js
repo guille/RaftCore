@@ -74,15 +74,3 @@ function sendRequest() {
   httpRequest.send('userRequest=' + encodeURIComponent(userRequest));
 }
 
-function switchNode() {
-		httpRequest = new XMLHttpRequest()
-		var nodeToSwitch = 1
-
-	  if (!httpRequest || selected === undefined) {
-	    alert('Giving up :( Cannot create an XMLHTTP instance');
-	    return false;
-	  }
-	  // httpRequest.onreadystatechange = alertContents;
-	  httpRequest.open('PATCH', 'nodes/' + selected);
-	  httpRequest.send();
-}

@@ -3,7 +3,9 @@
 <head>
   <title>Test</title>
   <script src="d3.v5.min.js"></script>
-  <script src="d3test.js"></script>
+  <script src="initialsim.js"></script>
+  <script src="main.js"></script>
+  <script src="heartbeats.js"></script>
   <link rel="stylesheet" type="text/css" href="d3test.css">
 </head>
 <body>
@@ -24,7 +26,7 @@
           <span id="selected-node-term">-</span>
         </p>
         <!-- Change to the restart/stop button -->
-        <button onclick="switchNode(1)">Stop/restart</button>
+        <button id="switch-node" onclick="switchNode()" disabled="true">Stop/restart</button>
         </fieldset>
 
       <fieldset>
@@ -33,7 +35,7 @@
       <button onclick="sendRequest()">➡</button>
       </fieldset>
       <button onclick="heartbeatFrom(4)">Send heartbeats</button>
-      <button onclick="updateNodeStates()">Update states</button>
+      <!-- <button onclick="updateLog(1)">Update log</button> -->
       
     </div>
     <div id="visualization">
@@ -48,6 +50,7 @@
     <div id="sm">STATE MACHINES</div>
     <div id="legend">Colours - states</div>
   </div>
+  <footer><div id="errors"></div></footer>
   <script src="d3log.js"></script>
 </body>
 </html>
