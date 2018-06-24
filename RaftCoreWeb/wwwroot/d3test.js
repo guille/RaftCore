@@ -1,3 +1,8 @@
+var selected;
+
+var states = ['Stopped', 'Stopped', 'Stopped', 'Stopped', 'Stopped']
+var terms = [0, 0, 0, 0, 0]
+
 var width = 400, height = 300
 
 var nodes = [
@@ -25,7 +30,13 @@ var simulation = d3.forceSimulation(nodes)
   .force('charge', d3.forceManyBody().strength(-4000))
   .force('center', d3.forceCenter(width / 2, height / 2))
   .force('link', d3.forceLink().links(links))
-  .on('tick', ticked);
+  .on('tick', ticked)
+  .on('end', autoPolling)
+
+function autoPolling() {
+  console.log("running")
+  setInterval(ticked, 1000)
+}
 
 function updateLinks() {
   var u = d3.select('.links')
@@ -58,6 +69,7 @@ function updateText() {
 
   u.enter()
     .append('text')
+    .on('click', clickedNode)
     .text(function(d) {
       return d.name
     })
@@ -77,12 +89,52 @@ function updateText() {
 
 }
 
-states = ['Candidate', 'Stopped', 'Leader', 'Follower']
 
-function getNodeState(node) {
-  if (node === 4)
-    node--
-  return states[node]
+
+function updateNodeStates() {
+  // update variable states
+  var oReq = new XMLHttpRequest();
+  oReq.open("GET", "nodes/states/");
+  oReq.onload = function (e) {
+    if (oReq.readyState === 4) {
+      if (oReq.status === 200) {
+        states = JSON.parse(oReq.responseText)
+      } else {
+        console.error(oReq.statusText);
+      }
+    }
+  };
+  oReq.send();
+  
+}
+
+function updateNodeTerms() {
+  // update variable states
+  var oReq = new XMLHttpRequest();
+  oReq.open("GET", "nodes/terms/");
+  oReq.onload = function (e) {
+    if (oReq.readyState === 4) {
+      if (oReq.status === 200) {
+        terms = JSON.parse(oReq.responseText)
+      } else {
+        console.error(oReq.statusText);
+      }
+    }
+  };
+  oReq.send();
+  
+}
+
+function updatePanel() {
+  if (selected !== undefined) {
+    document.getElementById("selected-node-id").innerHTML = nodes[selected].name
+    document.getElementById("selected-node-state").innerHTML = states[selected]
+    document.getElementById("selected-node-term").innerHTML = terms[selected]
+  }
+}
+
+function clickedNode(i) {
+  selected = i.index
 }
 
 function updateCircles() {
@@ -93,6 +145,7 @@ function updateCircles() {
 
 	c.enter()
 	  .append('circle')
+    .on('click', clickedNode)
 	  .merge(c)
 	  .attr('cx', function(d,i){
 	      return d.x
@@ -103,10 +156,8 @@ function updateCircles() {
 	  .attr('r', 20)
 	  .attr('stroke', "#0f0f0f")
     .attr('class', function(d,i){
-      return getNodeState(i)
+      return states[i]
     })
-
-    //.attr('class', GetNode(??).NodeState)
 
 	c.exit().remove()
 }
@@ -115,6 +166,9 @@ function ticked() {
   updateLinks()
   updateCircles()
   updateText()
+  updateNodeStates()
+  updateNodeTerms()
+  updatePanel()
 }
 
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RaftCore;
 using RaftCore.StateMachine.Implementations;
 using RaftCore.Connections;
@@ -7,5 +8,6 @@ namespace RaftCoreWeb.Services {
     public interface ICluster {
         RaftNode GetNode(uint id);
         RaftCluster GetCluster();
+        List<RaftNode> GetNodes();
     }
 }

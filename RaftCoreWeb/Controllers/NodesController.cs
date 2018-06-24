@@ -14,7 +14,6 @@ namespace RaftCoreWeb.Controllers {
 
         public NodesController(ICluster cluster) {
             _cluster = cluster;
-            _cluster.GetNode(0).MakeRequest("2");
         }
 
         // GET /nodes/:id
@@ -30,6 +29,18 @@ namespace RaftCoreWeb.Controllers {
             var termNumber = _cluster.GetNode((uint)id).CurrentTerm;
             var data = new { state = st, term = termNumber};
             return new JsonResult(data);
+        }
+
+        // GET /nodes/states
+        [HttpGet("[controller]/states")]
+        public IEnumerable<string> GetNodeStates() {
+            return _cluster.GetNodes().Select(x => x.NodeState.ToString());
+        }
+
+        // GET /nodes/terms
+        [HttpGet("[controller]/terms")]
+        public IEnumerable<string> GetNodeTerms() {
+            return _cluster.GetNodes().Select(x => x.CurrentTerm.ToString());
         }
 
         // GET /nodes/:id/log
@@ -50,7 +61,7 @@ namespace RaftCoreWeb.Controllers {
             var res = new object[log.Count];
 
             for (int i = 0; i < log.Count; i++) {
-                bool cm = i < commitIndex;
+                bool cm = i <= commitIndex;
                 res[i] = new { term = log[i].TermNumber, command = log[i].Command, committed = cm};
             }
             return new JsonResult(res);
@@ -65,13 +76,25 @@ namespace RaftCoreWeb.Controllers {
 
         // PATCH /nodes
         [HttpPatch("[controller]/{id}")]
-        public void SwitchState(int id) {
+        public string SwitchState(int id) {
             // Stòp/Restart node <id>
             var node = _cluster.GetNode((uint)id);
-            if (node.NodeState == NodeState.Stopped)
+            if (node.NodeState == NodeState.Stopped) {
                 node.Restart();
-            else
+            }
+            else {
                 node.Stop();
+            }
+            return "";
+        }
+
+        // POST /nodes/requests
+        [HttpPost("[controller]/requests")]
+        public string MakeRequest() {
+            var req = Request.Form["userRequest"].ToString();
+            var node = _cluster.GetNode(1);
+            node.MakeRequest(req);
+            return "";
         }
     }
 }

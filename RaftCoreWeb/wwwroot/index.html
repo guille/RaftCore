@@ -17,19 +17,24 @@
         </p>
         <p>
           State:<br />
-          <span id="selected-node-state">Stopped</span>
+          <span id="selected-node-state">-</span>
+        </p>
+        <p>
+          Term:<br />
+          <span id="selected-node-term">-</span>
         </p>
         <!-- Change to the restart/stop button -->
-        <button onclick="heartbeatFrom(4)">Send</button>
+        <button onclick="switchNode(1)">Stop/restart</button>
         </fieldset>
 
-      <form>
-        <fieldset>
-        <legend>Make request:</legend>
-        <input type="text" />
-        <input type="submit" value="➡" />
-        </fieldset>
-      </form>
+      <fieldset>
+      <legend>Make request:</legend>
+      <input type="text" id="request" />
+      <button onclick="sendRequest()">➡</button>
+      </fieldset>
+      <button onclick="heartbeatFrom(4)">Send heartbeats</button>
+      <button onclick="updateNodeStates()">Update states</button>
+      
     </div>
     <div id="visualization">
       <svg width="400" height="400">

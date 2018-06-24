@@ -39,6 +39,10 @@ namespace RaftCoreWeb.Services {
             return nodes.Find(x => x.NodeId == id);
         }
 
+        public List<RaftNode> GetNodes() {
+            return nodes;
+        }
+
         public RaftCluster GetCluster() {
             return cluster;
         }
