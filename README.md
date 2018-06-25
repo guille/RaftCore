@@ -11,3 +11,9 @@ Implementation of the Raft algorithm for the .NET Core Platform. This project is
 **RaftCoreTest**: Tests for RaftCore.
 
 **RaftCoreWeb**: Simple visualization of RaftCore using ASP.NET Core.
+
+## Links
+
+[API Reference](https://guille.github.io/RaftCore)
+
+[NUGet package homepage](https://www.nuget.org/packages/RaftCore/)
