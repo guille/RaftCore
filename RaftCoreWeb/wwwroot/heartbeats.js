@@ -1,6 +1,5 @@
 var initial = [{}, {}, {}, {}]
 
-
 function heartbeatFrom(source) {
   // nth of type starts at 1
   var source_x = d3.selectAll('.circles circle').filter(':nth-of-type(' + (source + 1) + ')').attr('cx')
@@ -18,8 +17,7 @@ function heartbeatFrom(source) {
         .alphaMin(0.09)
         .force('r', d3.forceRadial(0, target_x, target_y))
         .on('tick', updateMessages)
-        .on('end', removeMessages)
-        // .on('end', sendMessageBack(target_x, target_y, source_x, source_y))
+        .on('end', sendHeartbeats)
       message_i++
     }
   }
@@ -66,9 +64,21 @@ function updateMessages() {
   u.exit().remove()
 }
 
-function removeMessages() {
+function sendHeartbeats() {
+  // not working because it's getting called by several transitions
   d3.select('.messages')
     .selectAll('circle')
     .interrupt()
     .remove()
+
+  // for state in states
+  // if any are leader, call heartbeatFrom()
+  // otherwise, wait a second and retry
+  for (var i = 0; i < states.length; i++) {
+    if (states[i] === "Leader") {
+      heartbeatFrom(i)
+      return
+    }
+  }
+  setTimeout(sendHeartbeats, 1000)
 }

@@ -32,6 +32,7 @@ function updateSimulationForces() {
 
 
 function autoPolling() {
+  // sendHeartbeats()
   (function update(){
     updateView()
     setTimeout(update, 100);
