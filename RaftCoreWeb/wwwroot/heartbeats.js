@@ -17,16 +17,14 @@ function heartbeatFrom(source) {
         .alphaMin(0.09)
         .force('r', d3.forceRadial(0, target_x, target_y))
         .on('tick', updateMessages)
-        .on('end', sendHeartbeats)
+        
+      // Add the callback only to one of them
+      if (message_i === 0) simulation.on('end', sendHeartbeats)
       message_i++
     }
   }
 
-  var u = d3.select('.messages')
-    .selectAll('circle')
-    .interrupt()
-    .remove()
-
+  // create the 5 circles
   var u = d3.select('.messages')
     .selectAll('circle')
     .data(initial)
@@ -65,7 +63,6 @@ function updateMessages() {
 }
 
 function sendHeartbeats() {
-  // not working because it's getting called by several transitions
   d3.select('.messages')
     .selectAll('circle')
     .interrupt()

@@ -60,12 +60,15 @@ text {
   display: flex;
 }
 
-.log_entry {
-  flex: initial;
+.node_sm {
+  height: 50px;
+  margin-bottom: 10px;
+  width: 50px;
 }
 
-.log-index {
-  margin-bottom: 20px;
+.log_entry {
+  flex: initial;
+  margin-right: 10px;
 }
 
 form {

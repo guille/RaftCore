@@ -44,7 +44,8 @@ function updateView() {
   updateCircles()
   updateNodesInfo()
   updatePanel()
-  // send heartbeats from leader only if no heartbeats are being sent from that node atm
+  updateLogs()
+  updateSM()
 }
 
 

@@ -1,76 +1,108 @@
-var width = 500, height = 400
-
-logs = [{}, {}, {}, {}, {}]
-sm = []
-
-// var svg = d3.select("body")
-// 	.select('div#log')
-// 	.append("svg")
-//   .attr("width", width)
-//   .attr("height", height)
-
-// var g = svg.append("g")
-//   .selectAll('rect')
-//   .data(logs)
-//   .enter()
-//   .append("rect")
-//   .attr("x", 0)
-// 	.attr("y", function(d, i) { return i*60 })
-// 	.attr("width", width)
-// 	.attr("height", 50)
-
-createIndexes()
-createLogs()
-
-
-
-// function updateSM(error, response) {
-// 	d3.request("nodes/1/sm")
-//     .get(updateSM)
-
-// 	data.push(response)
+// function createIndexes() {
 // 	var svg = d3.select("body")
-// 		.select('div#sm')
-// 		.data(sm)
-// 		.enter()
-// 		.append("div")
-// 		.attr('class', 'sm-index')
-// 		.text(function(d) { return d; } )
+// 	            .select('div#log')
+// 	            .append("div")
+// 	            .attr('class', 'log-index')
+// 	            .text("0")
 // }
 
-function createIndexes() {
-	var svg = d3.select("body")
-		.select('div#log')
-		.append("div")
-		.attr('class', 'log-index')
-		.text("0")
-}
-
-// Appends one div for each log
-function createLogs() {
-	var svg = d3.select("body")
-		.select('div#log')
-		.selectAll('div')
-		.data(logs)
-		.enter()
-		.append("div")
-		.attr('class', 'node_log')
-		.text("h")
-}
+// // Appends one div for each log
+// function createLogs() {
+// 	var svg = d3.select("body")
+// 	            .select('div#log')
+// 	            .selectAll('div')
+// 	            .data(logs)
+// 	            .enter()
+// 	            .append("div")
+// 	            .attr('class', 'node_log')
+// 	            .text("h")
+// }
 
 
 function sendRequest() {
 	httpRequest = new XMLHttpRequest()
 	var userRequest = document.getElementById("request").value
-	console.log(userRequest)
 
-  if (!httpRequest) {
-    alert('Giving up :( Cannot create an XMLHTTP instance');
-    return false;
-  }
-  // httpRequest.onreadystatechange = alertContents;
-  httpRequest.open('POST', 'nodes/requests/');
-  httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  httpRequest.send('userRequest=' + encodeURIComponent(userRequest));
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	// httpRequest.onreadystatechange = alertContents;
+	httpRequest.open('POST', 'nodes/requests/');
+	httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	httpRequest.send('userRequest=' + encodeURIComponent(userRequest));
 }
 
+
+sm = [0, 0, 0, 0, 0]
+
+function updateSM() {
+	var oReq = new XMLHttpRequest();
+	oReq.open("GET", "nodes/sm/");
+	oReq.onload = function (e) {
+	if (oReq.readyState === 4) {
+	  if (oReq.status === 200) {
+		sm = JSON.parse(oReq.responseText)
+		displaySM()
+	  } else {
+		console.error(oReq.statusText);
+	  }
+	}
+  };
+  oReq.send();
+}
+
+function displaySM() {
+	var u = d3.select('#sm')
+	          .selectAll('div')
+	          .data(sm)
+
+	u.enter()
+	 .append('div')
+	 .attr('class', 'node_sm')
+	 .merge(u)
+	 .text(function(d, i) {
+	   return sm[i]
+	 })
+
+	u.exit().remove()
+}
+
+
+function updateLogs() {
+	var oReq = new XMLHttpRequest()
+	oReq.open("GET", "nodes/log/")
+	oReq.onload = function (e) {
+		if (oReq.readyState === 4) {
+		 	if (oReq.status === 200) {
+				logs = JSON.parse(oReq.responseText)
+				displayLogs()
+			} else {
+				console.error(oReq.statusText);
+			}
+		}
+	};
+	oReq.send();
+}
+
+logs=[[],[],[],[],[]]
+
+function displayLogs() {
+	for (var i = 0; i < logs.length; i++) {
+		// Show node i log
+		v = d3.selectAll('.node_log')
+		      .filter(':nth-of-type(' + (i+1) + ')')
+		      .selectAll('div')
+		      .data(logs[i])
+
+		v.enter()
+		 .append('div')
+		 .attr('class', 'log_entry')
+		 .merge(v)
+		 .text(function(d, j) {
+		 	return logs[i][j].command
+		 })
+		
+		v.exit().remove()
+	}
+}

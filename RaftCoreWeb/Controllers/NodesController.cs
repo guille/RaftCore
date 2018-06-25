@@ -29,36 +29,44 @@ namespace RaftCoreWeb.Controllers {
         }
 
         // GET /nodes/:id/log
-        [HttpGet("[controller]/{id}/log")]
-        public JsonResult GetLog(int id) {
-            /* Complex json, returning array of logentries
+        [HttpGet("[controller]/log")]
+        public JsonResult GetLog() {
+            /* Complex json, returning array of node logs (containing arrays of logentries)
             * [
-            *   {
+            *   [
+            *      {
             *       term:           1
             *       command:     "+2"
             *       committed:  false
-            *   },
-            *   {...}
+            *      },
+            *      {...}
+            *   ],
+            *   [...]
             * ]
             */
-            var node = _cluster.GetNode((uint)id);
+            var res = new List<object>();
 
-            var log = node.Log;
-            var commitIndex = node.CommitIndex;
-            var res = new object[log.Count];
+            foreach (var node in _cluster.GetNodes()) {
+                var log = node.Log;
+                var commitIndex = node.CommitIndex;
+                var nodeLog = new object[log.Count];
 
-            for (int i = 0; i < log.Count; i++) {
-                bool cm = i <= commitIndex;
-                res[i] = new { term = log[i].TermNumber, command = log[i].Command, committed = cm};
+                for (int i = 0; i < log.Count; i++) {
+                    bool cm = i <= commitIndex;
+                    nodeLog[i] = new { term = log[i].TermNumber, command = log[i].Command, committed = cm};
+                }
+                res.Add(nodeLog);
             }
+
             return new JsonResult(res);
         }
 
-        // GET /nodes/:id/sm
-        [HttpGet("[controller]/{id}/sm")]
-        public ActionResult<int> GetStateMachine(int id) {
-            var st = _cluster.GetNode((uint)id).StateMachine.RequestStatus(null);
-            return int.Parse(st);
+        // GET /nodes/sm
+        [HttpGet("[controller]/sm")]
+        public IEnumerable<string> GetStateMachines() {
+            return _cluster.GetNodes().Select(x => x.StateMachine.RequestStatus(null));
+            // var st = _cluster.GetNode((uint)id).StateMachine.RequestStatus(null);
+            // return int.Parse(st);
         }
 
         // PATCH /nodes
