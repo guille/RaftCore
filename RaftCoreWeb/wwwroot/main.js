@@ -34,7 +34,13 @@ function updateSimulationForces() {
 }
 
 
+function showBody() {
+	document.body.style.display = "block";
+}
+
 function autoPolling() {
+	drawLogContainers();
+	showBody();
 	(function update(){
 		updateView()
 		setTimeout(update, 100);
@@ -81,6 +87,7 @@ function updatePanel() {
 
 function clickedNode(i) {
 	document.getElementById("switch-node").removeAttribute("disabled")
+	document.getElementById("messages").innerHTML=""
 	selected = i.index
 }
 
@@ -90,7 +97,7 @@ function switchNode() {
 	var nodeToSwitch = 1
 
 	if (!httpRequest || selected === undefined) {
-		document.getElementById("errors").innerHTML = "Click on a node to select it"
+		document.getElementById("messages").style.color="red";
 		return false;
 	}
 	// httpRequest.onreadystatechange = alertContents;

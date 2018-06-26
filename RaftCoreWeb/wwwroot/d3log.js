@@ -1,6 +1,7 @@
 function sendRequest() {
 	httpRequest = new XMLHttpRequest()
 	var userRequest = document.getElementById("request").value
+	document.getElementById("request").value = ""
 
 	if (!httpRequest) {
 		alert('Giving up :( Cannot create an XMLHTTP instance');
@@ -85,4 +86,17 @@ function displayLogs() {
 		
 		v.exit().remove()
 	}
+}
+
+function drawLogContainers() {
+	var v = [{}, {}, {}, {}, {}]
+	u = d3.select('div#log')
+	      .selectAll('div')
+	      .data(v);
+
+	u.enter()
+	 .append('div')
+	 .attr('class', 'node_log')
+
+	u.exit().remove()
 }

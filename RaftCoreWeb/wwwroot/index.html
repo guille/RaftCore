@@ -5,8 +5,9 @@
   <script src="d3.v5.min.js"></script>
   <script src="initialsim.js"></script>
   <script src="heartbeats.js"></script>
+  <script src="d3log.js"></script>
   <script src="main.js"></script>
-  <link rel="stylesheet" type="text/css" href="d3test.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
   <div id="content">
@@ -29,12 +30,15 @@
         <button id="switch-node" onclick="switchNode()" disabled="true">Stop/restart</button>
         </fieldset>
 
-      <fieldset>
-      <legend>Make request:</legend>
-      <input type="text" id="request" />
-      <button onclick="sendRequest()">➡</button>
+      <fieldset class="rows">
+      <legend>Make request</legend>
+      <input type="text" id="request" placeholder="Enter request"/>
+      <button class="req-button" onclick="sendRequest()">➡</button>
       </fieldset>
-      <input id="send-heartbeats" type="checkbox" checked="false" onchange="sendHeartbeats()" /><label for="send-heartbeats">Show heartbeats</label>
+      <fieldset class="rows">
+      <legend>Messages</legend>
+      		<input id="send-heartbeats" type="checkbox" onchange="sendHeartbeats()" /><label for="send-heartbeats">Show heartbeats</label>
+      </fieldset>
     </div>
     <div id="visualization">
       <svg width="400" height="400">
@@ -44,17 +48,16 @@
         <g class="tags"></g>
       </svg>
     </div>
-    <div id="log">
-      <div class="node_log"></div>
-      <div class="node_log"></div>
-      <div class="node_log"></div>
-      <div class="node_log"></div>
-      <div class="node_log"></div>
-    </div>
+    <div id="log"></div>
     <div id="sm"></div>
     <div id="legend">Colours - states</div>
   </div>
-  <footer><div id="errors"></div></footer>
-  <script src="d3log.js"></script>
+  <footer>
+  	<div id="errors"></div>
+    <div id="messages">Click on a node to select it.</div>
+    <hr />
+  	<div id="info">This is a visualization of the <a href="https://raft.github.io/">Raft algorithm</a>. You can browse the code for this visualization in <a href="https://github.com/guille/raftcore">GitHub</a></div>
+  </footer>
+  
 </body>
 </html>

@@ -1,3 +1,19 @@
+body {
+  margin-top: 70px;
+  font-family: "Helvetica", "Arial", sans-serif;
+  display: none;
+}
+
+hr {
+  color:  lightblue;
+}
+
+#info {
+  text-align: right;
+  margin-top: 30px;
+  font-size: 14px;
+}
+
 circle {
   fill-opacity: 0.5;
 }
@@ -5,7 +21,7 @@ circle.Stopped {
   fill: maroon;
 }
 circle.Follower {
-  fill: olive;
+  fill: lime;
 }
 circle.Leader {
   stroke-width: 3;
@@ -33,7 +49,8 @@ text {
 
 #controls {
   background-color: #f0f0f0;
-  flex: 0;
+  flex: auto;
+  height:   100%;
 }
 
 #visualization {
@@ -46,29 +63,44 @@ text {
 
 #sm {
   flex: auto;
+  text-align: center;
 }
 
 #legend {
   flex: auto;
 }
 
+#errors {
+  color: red;
+}
+
 .node_log {
   height: 50px;
-  background-color: silver;
   margin-bottom: 10px;
   width: 500px;
   display: flex;
+  border-width: 5px;
+  border-color: silver;
+  border-style: solid;
 }
 
 .node_sm {
   height: 50px;
   margin-bottom: 10px;
   width: 50px;
+  border-width: 5px;
+  border-color: silver;
+  border-style: solid;
 }
 
 .log_entry {
   flex: initial;
   margin-right: 10px;
+}
+
+.rows {
+  display: flex;
+  flex-direction: row;
 }
 
 form {
@@ -80,6 +112,23 @@ input {
   display: block;
 }
 
+button.req-button {
+  margin-left:  10px;
+}
+
 legend {
   font-variant: small-caps;
+  margin-bottom: 3px;
+}
+
+p {
+  margin-top: 0px;
+}
+
+button {
+  width:100%;
+}
+
+a {
+  color: #e81c4f;
 }
