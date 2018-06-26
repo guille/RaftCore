@@ -1,6 +1,7 @@
 body {
   margin-top: 70px;
   font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 100%;
   display: none;
 }
 
@@ -76,10 +77,11 @@ text {
 
 .node_log {
   height: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
   width: 500px;
   display: flex;
-  border-width: 5px;
+  border-width: 3px;
   border-color: silver;
   border-style: solid;
 }
@@ -88,14 +90,15 @@ text {
   height: 50px;
   margin-bottom: 10px;
   width: 50px;
-  border-width: 5px;
+  border-width: 3px;
   border-color: silver;
   border-style: solid;
 }
 
 .log_entry {
   flex: initial;
-  margin-right: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .rows {

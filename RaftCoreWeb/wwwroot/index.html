@@ -58,6 +58,14 @@
     <hr />
   	<div id="info">This is a visualization of the <a href="https://raft.github.io/">Raft algorithm</a>. You can browse the code for this visualization in <a href="https://github.com/guille/raftcore">GitHub</a></div>
   </footer>
-  
+  <script type="text/javascript">
+    // Register enter key on the textbox sends a user request
+    document.getElementById("request").addEventListener("keyup", event => {
+        if(event.key !== "Enter") return;
+        sendRequest()
+        event.preventDefault(); // No need to `return false;`.
+    });
+
+  </script>
 </body>
 </html>
