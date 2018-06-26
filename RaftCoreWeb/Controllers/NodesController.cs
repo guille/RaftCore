@@ -45,9 +45,10 @@ namespace RaftCoreWeb.Controllers {
             * ]
             */
             var res = new List<object>();
+            int maxItemsToDisplay = 20;
 
             foreach (var node in _cluster.GetNodes()) {
-                var log = node.Log;
+                var log = node.Log.Skip(Math.Max(0, node.Log.Count() - maxItemsToDisplay)).ToList();
                 var commitIndex = node.CommitIndex;
                 var nodeLog = new object[log.Count];
 
