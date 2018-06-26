@@ -34,9 +34,7 @@
       <input type="text" id="request" />
       <button onclick="sendRequest()">➡</button>
       </fieldset>
-      <button onclick="heartbeatFrom(4)">Send heartbeats</button>
-      <!-- <button onclick="updateLog(1)">Update log</button> -->
-      
+      <input id="send-heartbeats" type="checkbox" checked="false" onchange="sendHeartbeats()" /><label for="send-heartbeats">Show heartbeats</label>
     </div>
     <div id="visualization">
       <svg width="400" height="400">

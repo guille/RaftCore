@@ -1,24 +1,3 @@
-// function createIndexes() {
-// 	var svg = d3.select("body")
-// 	            .select('div#log')
-// 	            .append("div")
-// 	            .attr('class', 'log-index')
-// 	            .text("0")
-// }
-
-// // Appends one div for each log
-// function createLogs() {
-// 	var svg = d3.select("body")
-// 	            .select('div#log')
-// 	            .selectAll('div')
-// 	            .data(logs)
-// 	            .enter()
-// 	            .append("div")
-// 	            .attr('class', 'node_log')
-// 	            .text("h")
-// }
-
-
 function sendRequest() {
 	httpRequest = new XMLHttpRequest()
 	var userRequest = document.getElementById("request").value
@@ -40,16 +19,17 @@ function updateSM() {
 	var oReq = new XMLHttpRequest();
 	oReq.open("GET", "nodes/sm/");
 	oReq.onload = function (e) {
-	if (oReq.readyState === 4) {
-	  if (oReq.status === 200) {
-		sm = JSON.parse(oReq.responseText)
-		displaySM()
-	  } else {
-		console.error(oReq.statusText);
-	  }
-	}
-  };
-  oReq.send();
+		if (oReq.readyState === 4) {
+			if (oReq.status === 200) {
+				sm = JSON.parse(oReq.responseText)
+				displaySM()
+			}
+			else {
+				console.error(oReq.statusText);
+			}
+		}
+	};
+	oReq.send();
 }
 
 function displaySM() {
