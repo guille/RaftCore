@@ -147,6 +147,9 @@ namespace RaftCore {
         /// Initializes the timers and state appropiate to the node's state.
         /// </summary>
         public void Run() {
+            if (Cluster == null) {
+                throw new InvalidOperationException("You must configure the cluster before you run it.");
+            }
             switch(this.NodeState) {
                 case NodeState.Candidate:
                     StopHeartbeatTimer();
