@@ -50,7 +50,17 @@
     </div>
     <div id="log"></div>
     <div id="sm"></div>
-    <div id="legend">Colours - states</div>
+    <div id="legend">
+      <svg width="200" height="250">
+        <g class="legend-g" transform="translate(20 25)">
+          <circle class="Leader" r="15" ></circle><text x="60" y="5">Leader</text>
+          <circle class="Candidate" r="15" transform="translate(0 50)"></circle><text x="60" y="55">Candidate</text>
+          <circle class="Follower" r="15" transform="translate(0 100)"></circle><text x="60" y="105">Follower</text>
+          <circle class="Stopped" r="15" transform="translate(0 150)"></circle><text x="60" y="155">Stopped</text>
+          <circle r="8" transform="translate(0 200)"></circle><text x="60" y="205">Message</text>
+        </g>
+      </svg>
+    </div>
   </div>
   <footer>
   	<div id="errors"></div>

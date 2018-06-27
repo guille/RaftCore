@@ -19,16 +19,20 @@ circle {
   fill-opacity: 0.5;
 }
 circle.Stopped {
+  stroke: #0f0f0f;
   fill: maroon;
 }
 circle.Follower {
+  stroke: #0f0f0f;
   fill: lime;
 }
 circle.Leader {
+  stroke: #0f0f0f;
   stroke-width: 3;
   fill: cadetblue;
 }
 circle.Candidate {
+  stroke: #0f0f0f;
   stroke-dasharray: 5,5;
   stroke-width: 3;
   fill: indigo;
@@ -68,7 +72,7 @@ text {
 }
 
 #legend {
-  flex: auto;
+  flex: 1;
 }
 
 #errors {

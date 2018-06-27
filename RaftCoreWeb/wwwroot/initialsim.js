@@ -64,8 +64,8 @@ function updateNodeLabels() {
 function updateCircles() {
 	c = d3.select('.circles')
 	      .selectAll('circle')
-	      .data(nodes)
-	      .attr('class', 'stopped');
+	      .data(nodes);
+	      // .attr('class', 'stopped');
 
 	c.enter()
 	 .append('circle')
@@ -78,7 +78,6 @@ function updateCircles() {
 	   return d.y;
 	 })
 	 .attr('r', 20)
-	 .attr('stroke', "#0f0f0f")
 	 .attr('class', function(d,i){
 	   return states[i];
 	 });
