@@ -13,7 +13,7 @@ var nodes = [
 	{name: 'E'},
 ]
 
-initSim()
+initSim();
 
 function initSim() {
 	var simulation = d3.forceSimulation(nodes)
@@ -23,40 +23,36 @@ function initSim() {
 	                   .force('center', d3.forceCenter(width / 2, height / 2))
 	                   .force('link', d3.forceLink().links(links))
 	                   .on('tick', updateSimulationForces)
-	                   .on('end', autoPolling)
+	                   .on('end', autoPolling);
 }
-
 
 function updateSimulationForces() {
-	updateLinks()
-	updateCircles()
-	updateNodeLabels()
-}
-
-
-function showBody() {
-	document.body.style.display = "block";
+	updateLinks();
+	updateCircles();
+	updateNodeLabels();
 }
 
 function autoPolling() {
 	drawLogContainers();
 	showBody();
 	(function update(){
-		updateView()
+		updateView();
 		setTimeout(update, 100);
 	})();
 }
 
-
-function updateView() {
-	updateCircles()
-	updateNodesInfo()
-	updatePanel()
-	updateLogs()
-	updateSM()
+function showBody() {
+	document.body.style.display = "block";
 }
 
 
+function updateView() {
+	updateCircles();
+	updateNodesInfo();
+	updatePanel();
+	updateLogs();
+	updateSM();
+}
 
 function updateNodesInfo() {
 	// update variable states
@@ -65,9 +61,9 @@ function updateNodesInfo() {
 	oReq.onload = function (e) {
 		if (oReq.readyState === 4) {
 			if (oReq.status === 200) {
-				res = JSON.parse(oReq.responseText)
-				terms = res[0]
-				states = res[1]
+				res = JSON.parse(oReq.responseText);
+				terms = res[0];
+				states = res[1];
 			}
 			else {
 				console.error(oReq.statusText);
@@ -79,28 +75,26 @@ function updateNodesInfo() {
 
 function updatePanel() {
 	if (selected !== undefined) {
-		document.getElementById("selected-node-id").innerHTML = nodes[selected].name
-		document.getElementById("selected-node-state").innerHTML = states[selected]
-		document.getElementById("selected-node-term").innerHTML = terms[selected]
+		document.getElementById("selected-node-id").innerHTML = nodes[selected].name;
+		document.getElementById("selected-node-state").innerHTML = states[selected];
+		document.getElementById("selected-node-term").innerHTML = terms[selected];
 	}
 }
 
 function clickedNode(i) {
-	document.getElementById("switch-node").removeAttribute("disabled")
-	document.getElementById("messages").innerHTML=""
-	selected = i.index
+	document.getElementById("switch-node").removeAttribute("disabled");
+	document.getElementById("messages").innerHTML="";
+	selected = i.index;
 }
 
 
 function switchNode() {
-	httpRequest = new XMLHttpRequest()
-	var nodeToSwitch = 1
+	httpRequest = new XMLHttpRequest();
 
 	if (!httpRequest || selected === undefined) {
 		document.getElementById("messages").style.color="red";
 		return false;
 	}
-	// httpRequest.onreadystatechange = alertContents;
 	httpRequest.open('PATCH', 'nodes/' + selected);
 	httpRequest.send();
 }

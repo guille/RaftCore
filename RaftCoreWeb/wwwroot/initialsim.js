@@ -14,50 +14,50 @@ var links = [
 function updateLinks() {
 	var u = d3.select('.links')
 	          .selectAll('line')
-	          .data(links)
+	          .data(links);
 
 	u.enter()
 	 .append('line')
 	 .merge(u)
 	 .attr('x1', function(d) {
-	   return d.source.x
+	   return d.source.x;
 	 })
 	 .attr('y1', function(d) {
-	   return d.source.y
+	   return d.source.y;
 	 })
 	 .attr('x2', function(d) {
-	   return d.target.x
+	   return d.target.x;
 	 })
 	 .attr('y2', function(d) {
-	   return d.target.y
-	 })
+	   return d.target.y;
+	 });
 
-	u.exit().remove()
+	u.exit().remove();
 }
 
 function updateNodeLabels() {
 	u = d3.select('.tags')
 	      .selectAll('text')
-	      .data(nodes)
+	      .data(nodes);
 
 	u.enter()
 	 .append('text')
 	 .on('click', clickedNode)
 	 .text(function(d) {
-	   return d.name
+	   return d.name;
 	 })
 	 .merge(u)
 	 .attr('x', function(d) {
-	   return d.x
+	   return d.x;
 	 })
 	 .attr('y', function(d) {
-	   return d.y
+	   return d.y;
 	 })
 	 .attr('dy', function(d) {
-	   return 5
-	 })
+	   return 5;
+	 });
 
-	u.exit().remove()
+	u.exit().remove();
 }
 
 
@@ -65,23 +65,23 @@ function updateCircles() {
 	c = d3.select('.circles')
 	      .selectAll('circle')
 	      .data(nodes)
-	      .attr('class', 'stopped')
+	      .attr('class', 'stopped');
 
 	c.enter()
 	 .append('circle')
 	 .on('click', clickedNode)
 	 .merge(c)
 	 .attr('cx', function(d,i){
-	   return d.x
+	   return d.x;
 	 })
 	 .attr('cy', function(d,i){
-	   return d.y
+	   return d.y;
 	 })
 	 .attr('r', 20)
 	 .attr('stroke', "#0f0f0f")
 	 .attr('class', function(d,i){
-	   return states[i]
-	 })
+	   return states[i];
+	 });
 
-	c.exit().remove()
+	c.exit().remove();
 }
