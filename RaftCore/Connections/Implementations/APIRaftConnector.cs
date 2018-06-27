@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using RaftCore;
 using RaftCore.Connections;
 using RaftCore.Components;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace RaftCore.Connections.Implementations {
     /// <summary>
@@ -14,6 +16,7 @@ namespace RaftCore.Connections.Implementations {
         /// </summary>
         public uint NodeId { get; private set; }
         private string baseURL { get; set; }
+        private readonly HttpClient client = new HttpClient();
 
         /// <summary>
         /// Initializes a connector through a base URL.
@@ -22,6 +25,9 @@ namespace RaftCore.Connections.Implementations {
         /// <param name="baseURL">Base URL to make requests on</param>
         public APIRaftConnector(uint nodeId, string baseURL) {
             this.NodeId = nodeId;
+            if (!baseURL.EndsWith("/")) {
+                baseURL += "/";
+            }
             this.baseURL = baseURL;
         }
 
@@ -33,6 +39,7 @@ namespace RaftCore.Connections.Implementations {
         public void MakeRequest(String command) {
             // convert params to json
             // make POST <baseurl>/makerequest
+            SendMakeRequest(command);
         }
 
         /// <summary>
@@ -49,6 +56,8 @@ namespace RaftCore.Connections.Implementations {
             // convert params to json
             // make POST <baseurl>/requestvote
             // parse response into a Result object
+            var res = SendRequestVote(term, candidateId, lastLogIndex, lastLogTerm).Result;
+
             return new Result<bool>(true, 1);
         }
 
@@ -68,15 +77,75 @@ namespace RaftCore.Connections.Implementations {
             // convert params to json
             // make POST <baseurl>/appendentries
             // parse response into a Result object
+            var res = SendAppendEntries(term, leaderId, prevLogIndex, prevLogTerm, entries, leaderCommit);
             return new Result<bool>(true, 1);
         }
 
         /// <summary>
         /// Calls the TestConnection method on the node.
-        /// For this, it makes a POST request to the endpoint baseURL/test
+        /// For this, it makes a GET request to the endpoint baseURL/test
         /// </summary>
         public void TestConnection() {
-            // make POST <baseurl>/test
+            SendTestConnection();
+        }
+
+        // **************************************
+        // **************************************
+
+        private async void SendMakeRequest(string command) {
+            var req = new Dictionary<string, string> { { "request", command } };
+
+            var content = new FormUrlEncodedContent(req);
+
+            var response = await client.PostAsync(baseURL + "makerequest", content);
+        }
+
+        private async Task<string> SendRequestVote(int term, uint candidateId, int lastLogIndex, int lastLogTerm) {
+            var req = new Dictionary<string, string>
+            {
+               { "term", term.ToString() },
+               { "candidateId", candidateId.ToString() },
+               { "lastLogIndex", lastLogIndex.ToString() },
+               { "lastLogTerm", lastLogTerm.ToString() }
+            };
+
+            var content = new FormUrlEncodedContent(req);
+
+            var response = await client.PostAsync(baseURL + "requestvote", content);
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return responseString;
+        }
+
+        private async Task<string> SendAppendEntries(int term, uint leaderId, int prevLogIndex, int prevLogTerm, List<LogEntry> entries, int leaderCommit) {
+            var entriesDict = new object[entries.Count];
+
+            for (int i = 0; i < entries.Count; i++) {
+                entriesDict[i] = new { term = entries[i].TermNumber, index = entries[i].Index, command = entries[i].Command};
+            }
+
+            var req = new Dictionary<string, string>
+            {
+               { "term", term.ToString() },
+               { "leaderId", leaderId.ToString() },
+               { "prevLogIndex", prevLogIndex.ToString() },
+               { "prevLogTerm", prevLogTerm.ToString() },
+               { "entries", entriesDict.ToString() },
+               { "leaderCommit", leaderCommit.ToString() }
+            };
+
+            var content = new FormUrlEncodedContent(req);
+
+            var response = await client.PostAsync(baseURL + "appendentries", content);
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            return responseString;
+        }
+
+        private async void SendTestConnection() {
+            var response = await client.GetAsync(baseURL + "test");
         }
     }
 }
