@@ -54,7 +54,7 @@ text {
 
 #controls {
   background-color: #f0f0f0;
-  flex: auto;
+  flex: 1;
   height:   100%;
 }
 
@@ -72,11 +72,16 @@ text {
 }
 
 #legend {
+  border-left: 2px solid;
+  border-bottom: 2px solid;
+  border-top: 2px solid;
+  height: 100%;
   flex: 1;
 }
 
-#errors {
-  color: red;
+#messages {
+  margin-top: 15px;
+  text-align: center;
 }
 
 .node_log {

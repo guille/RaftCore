@@ -39,6 +39,7 @@
       <legend>Messages</legend>
       		<input id="send-heartbeats" type="checkbox" onchange="sendHeartbeats()" /><label for="send-heartbeats">Show heartbeats</label>
       </fieldset>
+      <div id="messages">Click on a node to select it.</div>
     </div>
     <div id="visualization">
       <svg width="400" height="400">
@@ -63,8 +64,6 @@
     </div>
   </div>
   <footer>
-  	<div id="errors"></div>
-    <div id="messages">Click on a node to select it.</div>
     <hr />
   	<div id="info">This is a visualization of the <a href="https://raft.github.io/">Raft algorithm</a>. You can browse the code for this visualization in <a href="https://github.com/guille/raftcore">GitHub</a></div>
   </footer>
