@@ -30,7 +30,7 @@ namespace RaftCoreWeb.Controllers {
 
         // GET /nodes/:id/log
         [HttpGet("[controller]/log")]
-        public JsonResult GetLog() {
+        public JsonResult GetLogs() {
             /* Complex json, returning array of node logs (containing arrays of logentries)
             * [
             *   [
