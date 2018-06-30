@@ -37,7 +37,7 @@ function autoPolling() {
 	showBody();
 	(function update(){
 		updateView();
-		setTimeout(update, 100);
+		setTimeout(update, 150);
 	})();
 }
 

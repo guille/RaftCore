@@ -50,33 +50,41 @@ text {
 #content {
   margin: auto;
   display: flex;
+  align-self: flex-end;
 }
 
 #controls {
-  background-color: #f0f0f0;
-  flex: 1;
+  /*background-color: #f0f0f0;*/
+  flex: 0 0 10%;
   height:   100%;
 }
 
 #visualization {
+  flex: 0 0 auto;
+}
+
+#cluster_nodes {
   flex: 0;
 }
 
 #log {
-  flex: auto;
+  flex: 0 0 35%;
 }
 
 #sm {
-  flex: auto;
+  flex: 0;
   text-align: center;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
 #legend {
+  margin-left: auto;
   border-left: 2px solid;
   border-bottom: 2px solid;
   border-top: 2px solid;
   height: 100%;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 #messages {
@@ -84,30 +92,47 @@ text {
   text-align: center;
 }
 
-.node_log {
+.node_tag {
   height: 50px;
   margin-bottom: 15px;
-  border-radius: 10px;
-  width: 500px;
-  display: flex;
-  border-width: 3px;
-  border-color: silver;
-  border-style: solid;
+  line-height: 50px;
+  margin-right: 10px;
 }
 
 .node_sm {
   height: 50px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   width: 50px;
-  border-width: 3px;
-  border-color: silver;
-  border-style: solid;
+  line-height: 50px;
+  outline-width: 3px;
+  outline-color: #ccc;
+  outline-style: solid;
+}
+
+.node_log {
+  /*overflow-x: scroll;*/
+  height: 50px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  /*width: 80%;*/
+  display: flex;
+  background-color: #ccc;
 }
 
 .log_entry {
-  flex: initial;
+  background-color: #f0f0f0;
+  width: 50px;
+  text-align: center;
+  line-height: 50px;
   margin-right: 5px;
   margin-left: 5px;
+  border: 2.5px dashed;
+  display: flex;
+  flex-direction: column;
+}
+
+.committed {
+  border: 0;
 }
 
 .rows {

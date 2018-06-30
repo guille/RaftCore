@@ -45,7 +45,7 @@ namespace RaftCoreWeb.Controllers {
             * ]
             */
             var res = new List<object>();
-            int maxItemsToDisplay = 20;
+            int maxItemsToDisplay = 14;
 
             foreach (var node in _cluster.GetNodes()) {
                 var log = node.Log.Skip(Math.Max(0, node.Log.Count() - maxItemsToDisplay)).ToList();
@@ -66,8 +66,6 @@ namespace RaftCoreWeb.Controllers {
         [HttpGet("[controller]/sm")]
         public IEnumerable<string> GetStateMachines() {
             return _cluster.GetNodes().Select(x => x.StateMachine.RequestStatus(null));
-            // var st = _cluster.GetNode((uint)id).StateMachine.RequestStatus(null);
-            // return int.Parse(st);
         }
 
         // PATCH /nodes
