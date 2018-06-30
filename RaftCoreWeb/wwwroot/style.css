@@ -65,6 +65,7 @@ text {
 
 #cluster_nodes {
   flex: 0;
+  margin-left: 20px;
 }
 
 #log {
