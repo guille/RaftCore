@@ -92,6 +92,9 @@ function displayLogs() {
 		 .text(function(d, j) {
 		   return logs[i][j].command
 		 })
+		 .attr('class', function(d, j) {
+		   return 'log_entry ' + (logs[i][j].committed ? 'committed' : '')
+		 });
 		
 		v.exit().remove()
 	}
