@@ -57,6 +57,7 @@ text {
   /*background-color: #f0f0f0;*/
   flex: 0 0 10%;
   height:   100%;
+
 }
 
 #visualization {
@@ -111,11 +112,9 @@ text {
 }
 
 .node_log {
-  /*overflow-x: scroll;*/
   height: 50px;
   margin-bottom: 15px;
   border-radius: 10px;
-  /*width: 80%;*/
   display: flex;
   background-color: #ccc;
 }
@@ -157,6 +156,7 @@ button.req-button {
 legend {
   font-variant: small-caps;
   margin-bottom: 3px;
+  font-weight: 600;
 }
 
 p {
