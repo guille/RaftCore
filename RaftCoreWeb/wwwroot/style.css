@@ -116,7 +116,7 @@ text {
 }
 
 .node_sm {
-  overflow-x: scroll;
+  overflow-x: auto;
   text-overflow: clip;
   height: 50px;
   margin-bottom: 15px;
@@ -136,7 +136,7 @@ text {
 }
 
 .log_entry {
-  overflow-x: scroll;
+  overflow-x: auto;
   text-overflow: clip;
   background-color: #f0f0f0;
   width: 50px;

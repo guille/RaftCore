@@ -35,8 +35,10 @@ function updateSimulationForces() {
 function autoPolling() {
 	drawLogContainers();
 	showBody();
-  logElements = Math.ceil(document.getElementsByClassName("node_log")[0].offsetWidth / 60);
-  console.log(logElements);
+	var spaceAvail = parseFloat(window.getComputedStyle(document.getElementById("legend")).marginLeft);
+  var totalw = spaceAvail + document.getElementsByClassName("node_log")[0].offsetWidth;
+  
+  logElements = Math.floor(totalw / 60);
 	(function update(){
 		updateView();
 		setTimeout(update, 150);
