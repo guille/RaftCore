@@ -4,6 +4,4 @@
 
 RaftCore is an mplementation of the Raft algorithm for the .NET Core Platform. This project is part of a Bachelor final project for the University of Oviedo.
 
-You can find the developer documentation [here](/api).
-
-
+You can find the developer documentation [here](/RaftCore/api/index.html).
