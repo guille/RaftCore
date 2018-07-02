@@ -1,5 +1,7 @@
 logs=[[],[],[],[],[]]
 sm = [0, 0, 0, 0, 0]
+logElements = 1;
+
 
 function sendRequest() {
 	httpRequest = new XMLHttpRequest();
@@ -61,10 +63,9 @@ function displaySM() {
 	u.exit().remove()
 }
 
-
 function updateLogs() {
 	var oReq = new XMLHttpRequest()
-	oReq.open("GET", "nodes/log/")
+	oReq.open("GET", "nodes/log/" + logElements)
 	oReq.onload = function (e) {
 		if (oReq.readyState === 4) {
 			if (oReq.status === 200) {

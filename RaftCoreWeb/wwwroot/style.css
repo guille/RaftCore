@@ -1,8 +1,25 @@
 body {
-  margin-top: 70px;
+  /*margin: 10 auto;*/
+  /*padding: 4em 1em;*/
   font-family: "Helvetica", "Arial", sans-serif;
   font-size: 100%;
   display: none;
+}
+
+header {
+  background-color: #333;
+  text-align: center;
+  line-height: 90px;
+  margin-bottom: 70px;
+  color:#fff;
+  height: 90px;
+}
+
+header h1 {
+  /*vertical-align: center;*/
+  font-size: 2.5em;
+  font-weight: 300;
+  margin: 0;
 }
 
 hr {
@@ -55,9 +72,8 @@ text {
 
 #controls {
   /*background-color: #f0f0f0;*/
-  flex: 0 0 10%;
+  flex: 0 1 5%;
   height:   100%;
-
 }
 
 #visualization {
@@ -82,9 +98,7 @@ text {
 
 #legend {
   margin-left: auto;
-  border-left: 2px solid;
-  border-bottom: 2px solid;
-  border-top: 2px solid;
+  border: 2px solid;
   height: 100%;
   flex: 0 1 auto;
 }
@@ -102,9 +116,11 @@ text {
 }
 
 .node_sm {
+  overflow-x: scroll;
+  text-overflow: clip;
   height: 50px;
   margin-bottom: 15px;
-  width: 50px;
+  width: 40px;
   line-height: 50px;
   outline-width: 3px;
   outline-color: #ccc;
@@ -120,6 +136,8 @@ text {
 }
 
 .log_entry {
+  overflow-x: scroll;
+  text-overflow: clip;
   background-color: #f0f0f0;
   width: 50px;
   text-align: center;

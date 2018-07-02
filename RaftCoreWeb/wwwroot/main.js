@@ -3,7 +3,7 @@ var selected;
 var states = ['Stopped', 'Stopped', 'Stopped', 'Stopped', 'Stopped']
 var terms = [0, 0, 0, 0, 0]
 
-var width = 400, height = 300
+var width = 300, height = 300
 
 var nodes = [
 	{name: 'A'},
@@ -35,6 +35,8 @@ function updateSimulationForces() {
 function autoPolling() {
 	drawLogContainers();
 	showBody();
+  logElements = Math.ceil(document.getElementsByClassName("node_log")[0].offsetWidth / 60);
+  console.log(logElements);
 	(function update(){
 		updateView();
 		setTimeout(update, 150);

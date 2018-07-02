@@ -28,9 +28,9 @@ namespace RaftCoreWeb.Controllers {
             return res;
         }
 
-        // GET /nodes/:id/log
-        [HttpGet("[controller]/log")]
-        public JsonResult GetLogs() {
+        // GET /nodes/log/:elems
+        [HttpGet("[controller]/log/{elems}")]
+        public JsonResult GetLogs(int elems) {
             /* Complex json, returning array of node logs (containing arrays of logentries)
             * [
             *   [
@@ -45,7 +45,7 @@ namespace RaftCoreWeb.Controllers {
             * ]
             */
             var res = new List<object>();
-            int maxItemsToDisplay = 14;
+            int maxItemsToDisplay = elems;
 
             foreach (var node in _cluster.GetNodes()) {
                 var log = node.Log.Skip(Math.Max(0, node.Log.Count() - maxItemsToDisplay)).ToList();
