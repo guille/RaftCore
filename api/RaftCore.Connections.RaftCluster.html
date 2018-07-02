@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     
@@ -225,7 +225,7 @@ The broadcast time will always be at least 25 ms.
   <h4 id="RaftCore_Connections_RaftCluster_CalculateElectionTimeoutMS" data-uid="RaftCore.Connections.RaftCluster.CalculateElectionTimeoutMS">CalculateElectionTimeoutMS()</h4>
   <div class="markdown level1 summary"><p>Randomly calculates the election timeout for a node in the cluster.
 This calculation is based on the return value of <a class="xref" href="RaftCore.Connections.RaftCluster.html#RaftCore_Connections_RaftCluster_CalculateBroadcastTimeMS">CalculateBroadcastTimeMS()</a>
-The election timeout will be a random number between 12 and 32 times that of the broadcast time.</p>
+The election timeout will be a random number between 12 and 24 times that of the broadcast time.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
