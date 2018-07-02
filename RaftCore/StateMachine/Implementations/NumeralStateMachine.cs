@@ -20,6 +20,8 @@ namespace RaftCore.StateMachine.Implementations {
                 state += delta;
             } catch (System.FormatException) {
                 ; // Don't apply bad requests
+            } catch (System.OverflowException) {
+                ; // Don't apply bad requests
             }
 
         }
