@@ -145,13 +145,13 @@ text {
   line-height: 50px;
   margin-right: 5px;
   margin-left: 5px;
-  border: 2.5px dashed;
+  outline: 2.5px dashed;
   display: flex;
   flex-direction: column;
 }
 
 .committed {
-  border: 0;
+  outline: 0;
 }
 
 .rows {
