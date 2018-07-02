@@ -106,6 +106,7 @@ text {
 #messages {
   margin-top: 15px;
   text-align: center;
+  font-size: 20px;
 }
 
 .node_tag {
