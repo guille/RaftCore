@@ -37,7 +37,6 @@ function autoPolling() {
 	showBody();
 	var spaceAvail = parseFloat(window.getComputedStyle(document.getElementById("legend")).marginLeft);
   var totalw = spaceAvail + document.getElementsByClassName("node_log")[0].offsetWidth;
-  
   logElements = Math.floor(totalw / 60);
 	(function update(){
 		updateView();

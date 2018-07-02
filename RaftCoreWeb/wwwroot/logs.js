@@ -18,7 +18,7 @@ function sendRequest() {
 }
 
 function drawLogContainers() {
-	var v = [{}, {}, {}, {}, {}]
+	var v = [{}, {}, {}, {}, {}];
 	u = d3.select('div#log')
 		  .selectAll('div')
 		  .data(v);
@@ -26,6 +26,18 @@ function drawLogContainers() {
 	u.enter()
 	 .append('div')
 	 .attr('class', 'node_log');
+
+	u.exit().remove();
+
+	var b = [{}, {}, {}, {}, {}];
+
+	u = d3.select('div#sm')
+		  .selectAll('div')
+		  .data(v);
+
+	u.enter()
+	 .append('div')
+	 .attr('class', 'node_sm');
 
 	u.exit().remove();
 }
