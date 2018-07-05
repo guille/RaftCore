@@ -57,8 +57,8 @@ namespace RaftCore.Connections.Implementations {
             // make POST <baseurl>/requestvote
             // parse response into a Result object
             var res = SendRequestVote(term, candidateId, lastLogIndex, lastLogTerm).Result;
-
-            return new Result<bool>(true, 1);
+            
+            return ParseResultFromJSON(res);
         }
 
         /// <summary>
@@ -77,8 +77,9 @@ namespace RaftCore.Connections.Implementations {
             // convert params to json
             // make POST <baseurl>/appendentries
             // parse response into a Result object
-            var res = SendAppendEntries(term, leaderId, prevLogIndex, prevLogTerm, entries, leaderCommit);
-            return new Result<bool>(true, 1);
+            var res = SendAppendEntries(term, leaderId, prevLogIndex, prevLogTerm, entries, leaderCommit).Result;
+
+            return ParseResultFromJSON(res);
         }
 
         /// <summary>
@@ -146,6 +147,42 @@ namespace RaftCore.Connections.Implementations {
 
         private async void SendTestConnection() {
             var response = await client.GetAsync(baseURL + "test");
+        }
+
+        private Result<bool> ParseResultFromJSON(string res) {
+        	// Assumes valid input. One of:
+        	// {"term":22,"value":false}
+        	// {"value":true,"term":1}
+            var sep = res.Split(",");
+            string strTerm;
+            string strValue;
+            
+            if (sep[0][sep[0].Length - 1] == 'e') {
+            	strValue = sep[0];
+            	strTerm = sep[1];
+            }
+            else {
+	            strTerm = sep[0];
+	            strValue = sep[1];
+            }
+            strTerm.Trim('{');
+            strTerm.Trim('}');
+            strValue.Trim('{');
+            strValue.Trim('}');
+
+            int resultTerm;
+            bool resultValue;
+			
+			if (strValue[8] == 'f') {
+				resultValue = false;
+			}
+			else {
+				resultValue = true;
+			}
+
+			resultTerm = int.Parse(strTerm.Substring(6));
+
+			return new Result<bool>(resultValue, resultTerm);
         }
     }
 }
