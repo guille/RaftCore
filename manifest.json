@@ -57,10 +57,10 @@
       "output": {
         ".html": {
           "relative_path": "api/RaftCore.Connections.Implementations.APIRaftConnector.html",
-          "hash": "+bsRyLLdqQbgmDoIVoLpUg=="
+          "hash": "5tv4AOS6yGwCnVDSOmr67Q=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -84,7 +84,7 @@
           "hash": "OkZt0L3VQUuH4EbMjyLQxg=="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "oxWgjnaUaq7z2FbHzAHJAw=="
+          "hash": "gxK/IlpqwbtfzuclkchtRQ=="
         }
       },
       "is_incremental": false,
@@ -268,11 +268,11 @@
           "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build"
         },
-        "ConceptualDocumentProcessor": {
+        "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build"
         },
-        "ManagedReferenceDocumentProcessor": {
+        "ConceptualDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build"
         }
