@@ -1,8 +1,9 @@
 # RaftCore
 
+[![NuGet version](https://img.shields.io/nuget/v/RaftCore.svg?style=flat-square)](https://www.nuget.org/packages/RaftCore/)
 [![Build Status](https://travis-ci.org/guille/RaftCore.svg?branch=master)](https://travis-ci.org/guille/RaftCore)
 
-Implementation of the Raft algorithm for the .NET Core Platform. This project is part of a Bachelor final project for the University of Oviedo.
+Implementation of the Raft algorithm for the .NET Core Platform. This project is part of my Bachelor Final Project for the University of Oviedo.
 
 ## Content
 
@@ -10,7 +11,9 @@ Implementation of the Raft algorithm for the .NET Core Platform. This project is
 
 **RaftCoreTest**: Tests for RaftCore.
 
-**RaftCoreWeb**: Simple visualization of RaftCore using ASP.NET Core.
+## Using the library
+
+The library is published on the NuGet package manager under the name "RaftCore".
 
 ## Links
 

@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaftCore", "RaftCore\RaftCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaftCoreTest", "RaftCoreTest\RaftCoreTest.csproj", "{DF50AC8E-876B-43CD-8895-9C9688E7BD05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaftCoreWeb", "RaftCoreWeb\RaftCoreWeb.csproj", "{FD6A8396-E28A-4BAC-93D4-523EE7BA9BB4}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{DF50AC8E-876B-43CD-8895-9C9688E7BD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF50AC8E-876B-43CD-8895-9C9688E7BD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF50AC8E-876B-43CD-8895-9C9688E7BD05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD6A8396-E28A-4BAC-93D4-523EE7BA9BB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD6A8396-E28A-4BAC-93D4-523EE7BA9BB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD6A8396-E28A-4BAC-93D4-523EE7BA9BB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD6A8396-E28A-4BAC-93D4-523EE7BA9BB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

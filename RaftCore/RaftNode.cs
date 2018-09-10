@@ -1,7 +1,7 @@
 ﻿// #define DEBUG
 #undef DEBUG
-#define SIM
-// #undef SIM
+// #define SIM
+#undef SIM
 
 using RaftCore.StateMachine;
 using RaftCore.Connections;
