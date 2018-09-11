@@ -5,13 +5,13 @@
 
 Implementation of the Raft algorithm for the .NET Core Platform. This project is part of my Bachelor Final Project for the University of Oviedo. You can find a visualization of the implementation using D3js and ASP.NET [here](https://github.com/guille/raftcoreweb)
 
-## Content
+## 1. Content
 
 **RaftCore**: Library project consisting of an extensible implementation of the Raft algorithm.
 
 **RaftCoreTest**: Tests for RaftCore.
 
-## Using the library
+## 2. Using the library
 
 The library is published on the NuGet package manager under the name "RaftCore". Once the library has been obtained, it must be included into the user’s project. Different steps will be taken depending on how it was obtained. The Microsoft [documentation page for NuGet packages](https://docs.microsoft.com/en-us/nuget/consume-packages/ways-to-install-a-package.) goes into detail on these options.
 
@@ -19,7 +19,7 @@ When using Visual Studio to add the NuGet package to a project, the dependency i
 
 Once RaftCore has been added to the project, the next step is to choose a state machine and a connector. It is recommended at this point to either generate the API reference or visit the documentation page online ([link](https://guille.github.io/RaftCore/)) to consult.
 
-### Choosing a state machine
+### 2.1. Choosing a state machine
 
 The project offers two state machines out-of-the-box. However, these implementations are very basic and were mostly developed to test the application, so most users will need to develop their own implementation.
 
@@ -29,7 +29,7 @@ Another important note is the handling of bad or unrecognizable requests to the 
 
 The other methods must be implemented to parse the expected user commands and status requests. For example, a possible implementation of this interface could connect to a relational database in the host machine and send the user commands as SQL strings to it. If the database is configured in the same way in all the machines, the same entries will be executed on each and it will be replicated.
 
-### Choosing a connector
+### 2.2. Choosing a connector
 
 The project also offers two basic connectors. The first one connects to nodes in memory and is mainly used for testing or simulations. The second one, *APIRaftConnector*, takes a base URL and will make HTTP requests to a set of pre-defined endpoints. The parameters will be sent via JSON, and the result is also expected to be in JSON. These pre-defined endpoints are listed in the class’ documentation.
 
@@ -37,7 +37,7 @@ However, most users will prefer to configure their own endpoints, request and re
 
 When creating the connector, the user must also create the back-end responsible for serving these requests, if necessary. For example, if the user was using the given *APIRaftConnector*, he would still have to configure a server that listened on the given URL and properly interpreted the received requests at the correct routes. For example, the server must serve a route with the given base URL and the route “/requestvote”. That route will receive a POST request from other nodes whenever other nodes want to request the machine’s node’s vote. The user-configured server must parse the received JSON object and call the RequestVote method on its node with the appropriate parameters. Afterwards, the user would have to return the Result object as JSON back to the other node.
 
-### Configuring the cluster and nodes
+### 2.3. Configuring the cluster and nodes
 
 The *RaftCluster* class’ functionality is based on having a list of properly configured connectors. The following code snippet is an example of configuring a cluster with a set of user-defined connectors that store each node’s id and an IP address to connect to them:
 
@@ -85,12 +85,12 @@ node.MakeRequest(“+20”);
 
 A node can be forcefully stopped by calling the Stop method on it. This action can be reversed by calling the method Restart. The Raft algorithm the library is built upon ensures the entries will be replicated for as long as half plus one nodes are still running.
 
-## Contributing
+## 3. Contributing
 
 Contributions for any developer willing to extend RaftCore's functionality are welcome and encouraged. For example, a developer might wish to add a connector or state machine implementation he has developed to the project, fix a bug or add some of the missing Raft functionality, such as log compaction. As a rule of thumb, changes in the core functionality of the algorithm will require changes in the classes *RaftNode*, *RaftCluster* and *IRaftConnector*, as well as all the connector implementations.
 
 Adding new implementations should be as simple as adding the implemented class to the 
-“RaftCore.StateMachine.Implementations” or the “RaftCore.Connections.Implementations” namespaces and their corresponding folders.
+*RaftCore.StateMachine.Implementations* or the *RaftCore.Connections.Implementations* namespaces and their corresponding folders.
 
 It is mandatory to submit comprehensive automated tests along with any extensions or changes proposed to the main code repository. These tests must be appropriately named and organized inside the *RaftCoreTest* project. The tests can be executed by calling the command:
 
@@ -102,7 +102,7 @@ Finally, any classes changed must be documented using Visual Studio’s XML comm
 
 Feel free to open an issue if you want to discuss what to add or if you have any questions. If you want to contribute but you don't know what to work on, check out the open Issues.
 
-## Useful links
+## 4. Useful links
 
 [API Reference](https://guille.github.io/RaftCore)
 
