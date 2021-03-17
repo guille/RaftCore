@@ -1,7 +1,7 @@
 # RaftCore
 
 [![NuGet version](https://img.shields.io/nuget/v/RaftCore.svg?style=flat-square)](https://www.nuget.org/packages/RaftCore/)
-[![Build Status](https://github.com/guille/RaftCore/actions/workflows/dotnet.yml/badge.svg)
+![Build Status](https://github.com/guille/RaftCore/actions/workflows/dotnet.yml/badge.svg)
 
 Implementation of the Raft algorithm for the .NET Core Platform. This project is part of my Bachelor Final Project for the University of Oviedo. You can find a visualization of the implementation using D3js and ASP.NET [here](https://github.com/guille/raftcoreweb)
 
