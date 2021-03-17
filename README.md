@@ -1,7 +1,7 @@
 # RaftCore
 
 [![NuGet version](https://img.shields.io/nuget/v/RaftCore.svg?style=flat-square)](https://www.nuget.org/packages/RaftCore/)
-[![Build Status](https://travis-ci.org/guille/RaftCore.svg?branch=master)](https://travis-ci.org/guille/RaftCore)
+[![Build Status](https://github.com/guille/RaftCore/actions/workflows/dotnet.yml/badge.svg)
 
 Implementation of the Raft algorithm for the .NET Core Platform. This project is part of my Bachelor Final Project for the University of Oviedo. You can find a visualization of the implementation using D3js and ASP.NET [here](https://github.com/guille/raftcoreweb)
 
@@ -89,7 +89,7 @@ A node can be forcefully stopped by calling the Stop method on it. This action c
 
 Contributions for any developer willing to extend RaftCore's functionality are welcome and encouraged. For example, a developer might wish to add a connector or state machine implementation he has developed to the project, fix a bug or add some of the missing Raft functionality, such as log compaction. As a rule of thumb, changes in the core functionality of the algorithm will require changes in the classes *RaftNode*, *RaftCluster* and *IRaftConnector*, as well as all the connector implementations.
 
-Adding new implementations should be as simple as adding the implemented class to the 
+Adding new implementations should be as simple as adding the implemented class to the
 *RaftCore.StateMachine.Implementations* or the *RaftCore.Connections.Implementations* namespaces and their corresponding folders.
 
 It is mandatory to submit comprehensive automated tests along with any extensions or changes proposed to the main code repository. These tests must be appropriately named and organized inside the *RaftCoreTest* project. The tests can be executed by calling the command:
