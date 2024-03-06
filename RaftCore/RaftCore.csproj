@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp8.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageId>RaftCore</PackageId>
     <Version>1.0.0</Version>
     <Authors>Guillermo Rodríguez</Authors>
